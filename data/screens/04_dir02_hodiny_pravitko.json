@@ -1,0 +1,35 @@
+{
+  "screen_number": 4,
+  "screen_code": "G4_DIR_02",
+  "title": "Hodiny, lišta procházení testem a pravítko",
+  "kind": "directions",
+  "activity_id": 155930,
+  "source": {
+    "folder": "98626",
+    "file_en": "233129.html",
+    "file_cs": "233129_cs-CZ.html"
+  },
+  "texts": {
+    "heading": "Hodiny, lišta procházení testem a pravítko",
+    "timer_paragraph1": "Na vypracování první části testu budeš mít 36 minut. Po krátké přestávce budeš pracovat dalších 36 minut.",
+    "timer_paragraph2": "Hodiny v levé horní části obrazovky ti budou ukazovat, kolik času ti zbývá na dokončení každé části, jako tyto:",
+    "progressbar_paragraph1": "Dokud jsi na otázce, je její políčko zelené.",
+    "progressbar_paragraph2": "Když na otázku odpovíš, políčko této otázky zmodrá.",
+    "progressbar_paragraph3": "Pokud na otázku neodpovíš, políčko otázky zůstane šedé.",
+    "navbar_paragraph": "Na levé straně obrazovky je lišta procházení testem s políčky pro všechny otázky.",
+    "ruler_paragraph": "Klikni na [ikona pravítka] pro otevření pravítka. Procvič si posouvání a otáčení pravítka. Budeš ho mít k dispozici vždy, když ho budeš potřebovat pro zodpovězení otázky."
+  },
+  "images": [
+    { "role": "timer_demo", "local_path": "media/images/pokyny/27557/Timer_30-seconds2.gif" },
+    { "role": "timer_demo_alt", "local_path": "media/images/pokyny/27561/Timer_30-seconds2.gif" },
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/Disco-100px-left_Disco 100px left.png" },
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/Pointing100px-left.png" },
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/Kneeling-100px-left.png" },
+    { "role": "navbar_swatch_current", "local_path": "media/images/pokyny/27557/page-BG_green.png" },
+    { "role": "navbar_swatch_answered", "local_path": "media/images/pokyny/27557/page-BG_blue.png" },
+    { "role": "navbar_swatch_unanswered", "local_path": "media/images/pokyny/27557/page-BG_gray.png" },
+    { "role": "ruler_icon", "local_path": "media/images/pokyny/27557/Ruler_active.png" }
+  ],
+  "decision": "Bez pravítka; hodiny (18 min) a lišta procházení (spec kap.4).",
+  "notes": "ÚPRAVA NUTNÁ: (1) čas '36 minut' nahradit '18 minut' a odstranit zmínku o dvou částech/přestávce; (2) zcela vypustit odstavec o pravítku (ruler_paragraph, obrázek Ruler_active.png) protože pravítko je v projektu vypnuté. Ponechat hodiny a lištu procházení."
+}

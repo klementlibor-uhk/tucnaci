@@ -1,0 +1,33 @@
+{
+  "screen_number": 19,
+  "screen_code": "Logoff",
+  "title": "Odhlášení",
+  "kind": "logoff",
+  "activity_id": 175685,
+  "source": {
+    "html": "web/engine/packages/AssessmentMaster/logoff.html"
+  },
+  "texts": {
+    "note": "Obrazovka logoff.html je generický engine bez lokalizace (obsahuje jen anglický text) - nejde o TIMSS/PSI obsah, žádný _cs-CZ soubor pro ni neexistuje.",
+    "heading_en": "Thank you for taking this test.",
+    "logoff_button_en": "Logoff",
+    "back_button_en": "Back",
+    "cs_texts_status": "CHYBÍ - je třeba doplnit vlastní český text (např. 'Děkujeme za vyplnění testu.', 'Odhlásit', 'Zpět')."
+  },
+  "images": [],
+  "notes": "Podobně jako přihlašovací okno (screen 1), i tato obrazovka nemá v balíčku české texty ani odpovídající náhled ve screenshotech (docx pokrývá jen M71A01-M71A07). Text je třeba navrhnout nezávisle.",
+  "flow_decision_needed": {
+    "context": "V reálném TIMSS toku po dokončení Části 2 (PT2_END, screen 18) žák nepokračuje na odhlášení/logoff.html, ale na žákovský dotazník (student questionnaire). Obrazovka logoff.html tedy v originále NENÍ tím, co žák po testu skutečně vidí - je to obecná engine-obrazovka pro úplně jiný scénář (odhlášení z celého systému, ne konec konkrétní úlohy).",
+    "implication": "Projekt Tučňáci žádný dotazník neobsahuje (mimo rozsah spec, viz kap.1: jen úloha M71A01-M71A07). Po screen 18 (Konec testu) tedy potřebujeme VLASTNÍ závěrečnou obrazovku - logoff.html není použitelná ani jako vzor obsahu, ani jako vzor chování.",
+    "resolution": "Poděkování + konec, bez dotazníku (rozhodnutí 2026-09-11)."
+  },
+  "proposed_texts_cs": {
+    "status": "NÁVRH - vlastní text, nevychází z žádné předlohy (viz výše), čeká na schválení zadavatelem/týmem",
+    "heading": "Děkujeme!",
+    "paragraph1": "Dokončil/a jsi test Tučňáci nejmenší.",
+    "paragraph2": "Tvoje odpovědi jsme v pořádku uložili.",
+    "paragraph3": "Teď si prosím počkej na pokyny od zadavatele testu.",
+    "button": null,
+    "style_notes": "Zachovává styl a oslovení ostatních obrazovek (2. osoba jednotného čísla, přechylovací tvar 'dokončil/a', vzor vět 'Dokončil/a jsi Pokyny.' ze screen 9 a 'Jsi na konci Části 2.' ze screen 18). Bez tlačítka 'Další'/'Odhlásit' - jde o skutečně poslední obrazovku, po odeslání testu se přihlášení blokuje (spec kap.6.2), takže žádná navigace vpřed už nedává smysl; případné tlačítko 'Zavřít okno' lze doplnit až podle zvoleného technického řešení (krok 3)."
+  }
+}

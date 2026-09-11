@@ -1,0 +1,25 @@
+{
+  "screen_number": 6,
+  "screen_code": "G4_DIR_04",
+  "title": "Přetáhni svou odpověď",
+  "kind": "directions",
+  "activity_id": 155932,
+  "source": {
+    "folder": "98630",
+    "file_en": "233131.html",
+    "file_cs": "233131_cs-CZ.html"
+  },
+  "texts": {
+    "heading": "Přetáhni svou odpověď",
+    "intro": "Někdy odpovíš tak, že přetáhneš slova, čísla nebo obrázky.",
+    "practice": {
+      "drag_items": ["1", "2", "3"],
+      "drop_zones": 3,
+      "tip1": "Klikni na číslo a přidrž, přetáhni ho nad rámeček a pusť.",
+      "tip2": "Procvič si přetažení všech čísel do spodních rámečků."
+    }
+  },
+  "images": [],
+  "decision": "Ponechat (spec kap.4).",
+  "notes": "Cvičení drag&drop čísel 1-3 do tří rámečků - odpovídá typu interakce použité v M71A04 (řazení tučňáků) a M71A06 (přetahování ryb). Ponechat beze změny."
+}

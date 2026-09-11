@@ -1,0 +1,36 @@
+{
+  "screen_number": 1,
+  "screen_code": "LOGIN",
+  "title": "Přihlášení žáka",
+  "kind": "login",
+  "activity_id": null,
+  "source": {
+    "html": "web/engine/packages/TIMSS/login.html",
+    "js": "web/engine/packages/TIMSS2023MS/Resources/js/login.js",
+    "css": "web/engine/packages/TIMSS2023MS/Resources/build/css/login.min.css"
+  },
+  "validation": {
+    "student_id": { "pattern": "^\\d{8}$", "description": "8 číslic" },
+    "password": { "pattern": "^[a-zA-Z0-9]{5}\\*?$", "description": "5 alfanumerických znaků, volitelně zakončené hvězdičkou" }
+  },
+  "error_states_source_en": [
+    "Sorry you have already completed the assessment.",
+    "Username or password is incorrect.",
+    "concurrent login (více souběžných přihlášení stejným účtem)"
+  ],
+  "texts": {
+    "note": "Balíček neobsahuje české texty přihlašovacího okna (šablona login.html/login.js je bez lokalizace, texty '{error_summary}' a 'Log In' jsou zástupné/anglické). Náhled 'Obrazovky_TEST_tučňáci_ONLY.docx' obsahuje jen obrazovky M71A01–M71A07, přihlašovací okno nezahrnuje.",
+    "student_id_label_en": "(no label - icon only, glyphicon-user)",
+    "password_label_en": "(no label - icon only, glyphicon-lock)",
+    "login_button_en": "Log In",
+    "cs_texts_status": "CHYBÍ - je třeba doplnit ručně (vlastní návrh textů: 'Kód žáka', 'Heslo', 'Přihlásit se', chybové hlášky). Otevřená otázka pro zadavatele/UHK."
+  },
+  "images": [
+    { "role": "logo", "local_path": "media/images/common/timss-logo-new.png" }
+  ],
+  "notes": "Vlastní implementace přihlašovacího formuláře (2 pole + tlačítko), bez QTI enginu. Viz spec kap. 6.2.",
+  "verified_against_live_player": {
+    "date": "2026-09-11",
+    "result": "Potvrzeno screenshotem živého Playeru: přihlašovací okno skutečně nemá žádný text - jen logo IEA TIMSS 2023, pole se ikonou postavičky (ID žáka), pole se ikonou zámku (heslo) a oranžové tlačítko se šipkou '→' (bez popisku). Návrh vlastních textů (labely, chybové hlášky) je tedy čistě na nás, žádná předloha k převzetí neexistuje."
+  }
+}

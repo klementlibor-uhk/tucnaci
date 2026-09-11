@@ -1,0 +1,40 @@
+{
+  "screen_number": 15,
+  "screen_code": "M71A05",
+  "title": "Počet tučňáků",
+  "kind": "task_screen",
+  "activity_id": 155997,
+  "source": {
+    "folder": "93687",
+    "file_en": "250885.html",
+    "file_cs": "250885_cs-CZ.html"
+  },
+  "response_ids": ["MQ71A04AA_T (posuvník 3950-5050 krok 50)", "MQ71A04AB_T (posuvník 3950-5050 krok 50)", "MQ71A04B_T"],
+  "interaction": "2 posuvníky na rybí číselné ose + číselné pole",
+  "texts": {
+    "PSI.Title": "Počet tučňáků",
+    "PSI.Text1": "Tučňáci, kteří nejsou zdraví, mohou být chyceni dravci.",
+    "PSI.Question1": "A. Minulý rok žilo 4 900 tučňáků. Letos jich zůstalo jen 4 350, protože ostatní chytili dravci.",
+    "PSI.Question1Drag": "Přetáhni ukazatele [ikona] na správná místa na rybí číselné ose.",
+    "PSI.Question2": "B. Kolik tučňáků chytili dravci od minulého roku?",
+    "tabs": ["Obrázek", "Výška", "Hmotnost", "Počet (aktivní)", "Potrava", "Příspěvek"],
+    "PSI.TabMainTitle": "Tučňák nejmenší",
+    "url_bar": "https://www.IEA.eTIMSS.com/tucnaci",
+    "PSI.Rangetitle1": "Počet tučňáků nejmenších",
+    "PSI.RangeStart": "4 000",
+    "PSI.RangeEnd": "5 000",
+    "slider1_value_label": "4 900 minulý rok",
+    "slider2_value_label": "4 350 letos",
+    "rightQuestionOne": "Počet tučňáků, které chytili dravci:",
+    "PSI.bottomHeading": "Zdraví tučňáci přežijí!"
+  },
+  "images": [
+    { "role": "webpage_background", "local_path": "media/images/littlepenguins/Screen5_Webpage.jpg" },
+    { "role": "drag_icon", "local_path": "media/images/littlepenguins/drag_icon.png" },
+    { "role": "shark", "local_path": "media/images/littlepenguins/Screen5_Shark.png" },
+    { "role": "scale_tail", "local_path": "media/images/littlepenguins/tail_end_scale.png" },
+    { "role": "scale_head", "local_path": "media/images/littlepenguins/head_end_scale.png" }
+  ],
+  "process_events": ["SCREEN_LOADED", "MQ71A04AA_T (puštění posuvníku, response=hodnota)", "MQ71A04AB_T (puštění posuvníku, response=hodnota)", "NUMBERPAD_OPEN", "MQ71A04B_T (focus/blur, response)"],
+  "notes": "Ověřeno proti náhledu (docx, obrázek 6/25) - hodnoty 4900/4350, rozsah osy 4000-5000, texty se shodují."
+}

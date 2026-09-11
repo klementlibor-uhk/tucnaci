@@ -1,0 +1,36 @@
+{
+  "screen_number": 13,
+  "screen_code": "M71A03",
+  "title": "Výška",
+  "kind": "task_screen",
+  "activity_id": 155995,
+  "source": {
+    "folder": "93037",
+    "file_en": "228783.html",
+    "file_cs": "228783_cs-CZ.html"
+  },
+  "response_ids": ["MQ71A02A_T", "MQ71A02B_T", "MQ71A02C_T"],
+  "interaction": "3 číselná pole (math_min numerická klávesnice)",
+  "texts": {
+    "PSI.Title": "Výška",
+    "M71A03.Text1": "Tučňáci nejmenší jsou nejmenším druhem tučňáků.",
+    "M71A03.Text2": "Tučňáci císařští jsou největším druhem tučňáků.",
+    "PSI.Question1": "A. Kolik měří každý tučňák?",
+    "PSI.Question2": "B. O kolik vyšší je tučňák císařský než tučňák nejmenší?",
+    "tabs": ["Obrázek", "Výška (aktivní)", "Hmotnost", "Počet", "Potrava", "Příspěvek"],
+    "PSI.TabMainTitle": "Tučňák nejmenší",
+    "url_bar": "https://www.IEA.eTIMSS.com/tucnaci",
+    "PSI.Label_1": "Výška tučňáka císařského:",
+    "PSI.Label_2": "Výška tučňáka nejmenšího:",
+    "field_MQ71A02A_T_unit": "cm",
+    "field_MQ71A02B_T_unit": "cm",
+    "field_MQ71A02C_T_sentence": "Tučňák císařský je o [pole] cm vyšší než tučňák nejmenší.",
+    "height_scale_labels": ["0 cm", "50", "100 cm", "150"]
+  },
+  "images": [
+    { "role": "webpage_background", "local_path": "media/images/littlepenguins/Screen3_Webpage.jpg" },
+    { "role": "height_diagram", "local_path": "media/images/littlepenguins/Screen3_Height.png" }
+  ],
+  "process_events": ["SCREEN_LOADED", "NUMBERPAD_OPEN", "MQ71A02A_T/B_T/C_T (focus/blur, response=LaTeX)"],
+  "notes": "Ověřeno proti náhledu (docx, obrázek 4/25). Výška tučňáka nejmenšího a císařského (odpovědi) v balíčku nejsou uloženy jako 'správné řešení' - nutné doplnit z hodnoticího manuálu (otevřená otázka spec kap.9)."
+}

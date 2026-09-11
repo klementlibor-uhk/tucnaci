@@ -1,0 +1,26 @@
+{
+  "screen_number": 11,
+  "screen_code": "M71A01",
+  "title": "Úvod",
+  "kind": "task_screen",
+  "activity_id": 155993,
+  "source": {
+    "folder": "93021",
+    "file_en": "228767.html",
+    "file_cs": "228767_cs-CZ.html"
+  },
+  "response_ids": [],
+  "interaction": "Tlačítko pro start úlohy (událost M71A01_NEXT)",
+  "texts": {
+    "PSI.Title": "Tučňák nejmenší",
+    "M71A01.Text1": "Tučňák nejmenší je nejmenší druh tučňáka.",
+    "M71A01.Text2": "Tučňáci nejmenší žijí na ostrově blízko Austrálie.",
+    "M71A01.Text3": "Budeš doplňovat informace o tučňácích nejmenších na webové stránky.",
+    "M71A01_NEXT.Text": "Klikni na [šipka] a začni."
+  },
+  "images": [
+    { "role": "hero_image", "local_path": "media/images/littlepenguins/screen1_penguin.png" }
+  ],
+  "process_events": ["SCREEN_LOADED", "M71A01_NEXT"],
+  "notes": "Ověřeno proti náhledu (Obrazovky_TEST_tučňáci_ONLY.docx, obrázek 1/25) - texty se shodují přesně."
+}

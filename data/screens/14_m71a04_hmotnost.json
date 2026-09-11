@@ -1,0 +1,34 @@
+{
+  "screen_number": 14,
+  "screen_code": "M71A04",
+  "title": "Hmotnost",
+  "kind": "task_screen",
+  "activity_id": 155996,
+  "source": {
+    "folder": "93033",
+    "file_en": "228779.html",
+    "file_cs": "228779_cs-CZ.html"
+  },
+  "response_ids": ["MQ71A03A_T (řazení, pozice MQ71A03AA-AE)", "MQ71A03B_T"],
+  "interaction": "Řazení přetahováním (5 položek) + číselné pole",
+  "texts": {
+    "PSI.Title": "Hmotnost",
+    "M71A04.Text1": "Hmotnosti tučňáků nejsou na této webové stránce seřazeny podle velikosti.",
+    "M71A04.Text2": "A. Přetáhni tučňáky a seřaď je od nejtěžšího po nejlehčího.",
+    "M71A04.Text3": "B. Zdravý tučňák nejmenší váží více než 1 100 g. Kolik z těchto tučňáků je zdravých?",
+    "tabs": ["Obrázek", "Výška", "Hmotnost (aktivní)", "Počet", "Potrava", "Příspěvek"],
+    "PSI.TabMainTitle": "Tučňák nejmenší",
+    "url_bar": "https://www.IEA.eTIMSS.com/tucnaci",
+    "PSI.DragHeader1": "nejtěžší",
+    "PSI.DragHeader2": "nejlehčí",
+    "sortable_items_weights": ["1 120 g", "1 308 g", "1 065 g", "987 g", "1 132 g"],
+    "M71A04.TextR1": "Zdravý tučňák nejmenší váží více než 1 100 g.",
+    "M71A04.numberpad": "Počet zdravých tučňáků:"
+  },
+  "images": [
+    { "role": "webpage_background", "local_path": "media/images/littlepenguins/Screen4_Webpage.jpg" },
+    { "role": "sortable_penguin_icon", "local_path": "media/images/littlepenguins/Screen4_penguin.png" }
+  ],
+  "process_events": ["SCREEN_LOADED", "MQ71A03A_T (dragged, dropped, endTime, response)", "NUMBERPAD_OPEN", "MQ71A03B_T (focus/blur, response)"],
+  "notes": "Ověřeno proti náhledu (docx, obrázek 5/25) - hodnoty hmotností (1120,1308,1065,987,1132 g) a hraniční hodnota 1100 g se shodují."
+}

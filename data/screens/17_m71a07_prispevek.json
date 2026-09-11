@@ -1,0 +1,33 @@
+{
+  "screen_number": 17,
+  "screen_code": "M71A07",
+  "title": "Příspěvek",
+  "kind": "task_screen",
+  "activity_id": 155999,
+  "source": {
+    "folder": "93023",
+    "file_en": "228769.html",
+    "file_cs": "228769_cs-CZ.html"
+  },
+  "response_ids": ["MQ71A06A_T", "MQ71A06B_T"],
+  "interaction": "2 číselná pole",
+  "texts": {
+    "PSI.Title": "Příspěvek",
+    "M71A07.Text1": "Za příspěvek 8 zedů se nakoupí dostatek ryb na krmení jednoho tučňáka po celý měsíc.",
+    "PSI.Question1": "A. Kolik stojí krmení pro 5 tučňáků za měsíc?",
+    "PSI.Question2": "B. Kolik tučňáků můžeš krmit celý měsíc za 200 zedů?",
+    "tabs": ["Obrázek", "Výška", "Hmotnost", "Počet", "Potrava", "Příspěvek (aktivní)"],
+    "PSI.TabMainTitle": "Tučňák nejmenší",
+    "url_bar": "https://www.IEA.eTIMSS.com/tucnaci",
+    "PSI.InnerTitle": "Přispěj ještě dnes!",
+    "rightQuestionOne": "Krmení pro 5 tučňáků stojí [pole] zedů.",
+    "rightQuestionTwo": "Nakrmím [pole] tučňáků za 200 zedů.",
+    "PSI.ImageText": "Ryby, ryby, ryby!"
+  },
+  "images": [
+    { "role": "webpage_background", "local_path": "media/images/littlepenguins/Screen7_Webpage.jpg" },
+    { "role": "penguin", "local_path": "media/images/littlepenguins/screen7-penguin.png" }
+  ],
+  "process_events": ["SCREEN_LOADED", "NUMBERPAD_OPEN", "MQ71A06A_T/B_T (focus/blur, response)"],
+  "notes": "Ověřeno proti náhledu (docx, obrázek 8/25) - texty (8 zedů, 5 tučňáků, 200 zedů) se shodují. Poslední obrazovka úlohy - po ní následuje Konec testu (screen 18)."
+}

@@ -1,0 +1,27 @@
+{
+  "screen_number": 3,
+  "screen_code": "G4_DIR_01",
+  "title": "Vítej",
+  "kind": "directions",
+  "activity_id": 155929,
+  "source": {
+    "folder": "98624",
+    "file_en": "233128.html",
+    "file_cs": "233128_cs-CZ.html"
+  },
+  "texts": {
+    "heading": "Vítej v testu TIMSS!",
+    "paragraph1": "V testu budeš odpovídat na otázky z matematiky a z přírodovědy.",
+    "paragraph2": "Je důležité, aby ses snažil/a zodpovědět všechny otázky co nejlépe.",
+    "tip1": "Mezi otázkami můžeš přecházet kliknutím na šipky dole na obrazovce.",
+    "tip2_before_icon": "Kliknutím na",
+    "tip2_after_icon": "přejdeš na další obrazovku."
+  },
+  "images": [
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/Wave-200px-right.png" },
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/Kneeling-100px-right.png" },
+    { "role": "next_button_icon", "local_path": "media/images/pokyny/27557/Next_button.png" }
+  ],
+  "decision": "Ponechat; text jen o matematice (spec kap.4) - vynechat zmínku o přírodovědě.",
+  "notes": "Text 'z matematiky a z přírodovědy' je nutné upravit jen na matematiku, protože Tučňáci jsou matematická úloha."
+}

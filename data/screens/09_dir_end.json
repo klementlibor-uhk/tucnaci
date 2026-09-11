@@ -1,0 +1,20 @@
+{
+  "screen_number": 9,
+  "screen_code": "DIR_END_G4",
+  "title": "Konec pokynů",
+  "kind": "info",
+  "activity_id": 155938,
+  "source": {
+    "folder": "97532",
+    "file_en": "216883.html",
+    "file_cs": "216883_cs-CZ.html"
+  },
+  "texts": {
+    "DIR_END.Paragraph1": "Dokončil/a jsi Pokyny.",
+    "DIR_END.Paragraph2": "Pro pokračování klikni na tlačítko Další.",
+    "DIR.END.Next": "Další"
+  },
+  "images": [],
+  "decision": "Ponechat (spec kap.4).",
+  "notes": "Beze změny."
+}

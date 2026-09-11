@@ -1,0 +1,38 @@
+{
+  "screen_number": 7,
+  "screen_code": "G4_DIR_05",
+  "title": "Číselná klávesnice",
+  "kind": "directions",
+  "activity_id": 155933,
+  "source": {
+    "folder": "98632",
+    "file_en": "233474.html",
+    "file_cs": "233474_cs-CZ.html"
+  },
+  "texts": {
+    "heading": "Číselná klávesnice",
+    "intro": "U otázek, kde odpověď tvoří číslo, budeš používat číselnou klávesnici. Můžeš vkládat čísla, zlomky, desetinná čísla a záporná čísla.",
+    "keypad_labels": {
+      "minus": "Vložení znaménka mínus (klikni před číslem)",
+      "fraction": "Vložení zlomku",
+      "clear": "Vymazání",
+      "close": "Zavření číselné klávesnice",
+      "decimal": "Vložení desetinné čárky"
+    },
+    "practice": {
+      "table_label": "Použij číselnou klávesnici",
+      "question": "Napiš zlomek [1/2 - vzorec vložen jako obrázek WIRIS/MathML v originále].",
+      "answer_label": "Odpověď:",
+      "tip1": "Klikni do políčka pro odpověď a procvič si používání číselné klávesnice.",
+      "tip2_before_icon": "Číselnou klávesnici můžeš libovolně přesouvat po obrazovce tak, že klikneš na",
+      "tip2_after_icon": "a přetáhneš ji."
+    }
+  },
+  "images": [
+    { "role": "keypad_diagram", "local_path": "media/images/pokyny/27561/G8_DIR_05-blank-keys new width.png" },
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/To-Be-or...-100px-left.png" },
+    { "role": "move_icon", "local_path": "media/images/pokyny/27557/move-object-arrows.png" }
+  ],
+  "decision": "Ponechat, cvičení s celým číslem místo zlomku (spec kap.4).",
+  "notes": "ÚPRAVA NUTNÁ: cvičná otázka 'Napiš zlomek 1/2' nahradit cvičením se zadáním celého čísla (např. 'Napiš číslo 5'), protože úloha Tučňáci vyžaduje jen celá čísla, ne zlomky. Text o vkládání zlomků a záporných čísel v úvodu ('Můžeš vkládat čísla, zlomky, desetinná čísla a záporná čísla.') zvážit zkrátit, pokud tyto typy odpovědí Tučňáci nevyžadují (ověřit: odpovědi M71A0x jsou celá čísla)."
+}

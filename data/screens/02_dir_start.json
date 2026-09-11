@@ -1,0 +1,31 @@
+{
+  "screen_number": 2,
+  "screen_code": "DIR_START_G4",
+  "title": "Začátek pokynů",
+  "kind": "password_gate",
+  "activity_id": 155928,
+  "source": {
+    "folder": "97530",
+    "file_en": "216851.html",
+    "file_cs": "216851_cs-CZ.html"
+  },
+  "response_ids": [],
+  "texts": {
+    "DIR_START.Header": "POKYNY",
+    "DIR_START.Paragraph1": "Ahoj",
+    "DIR_START.Paragraph2": "Prosím počkej, až ti dá zadavatel testu heslo.",
+    "DIR_START.PasswordText": "Heslo:",
+    "Dir_Start.Next": "Začít"
+  },
+  "password_field": { "id": "password1", "maxlength": 4, "type": "text" },
+  "images": [
+    { "role": "logo", "local_path": "media/images/common/timss-logo-new.png" }
+  ],
+  "process_events": ["DIRECTIONS_START (Booklet Part = 'Directions', login success, incorrect attempts)", "POPUP_PW_INCORRECT_OPEN", "POPUP_PW_INCORRECT_CLOSE"],
+  "notes": "Rozhodnutí spec kap.6: 'Nahradit přihlášením / Začít' - obrazovka se v projektu spojuje s tokem přihlášení; ponechat text a čekání na heslo zadavatele.",
+  "verified_against_live_player": {
+    "date": "2026-09-11",
+    "test_password": "0000",
+    "result": "Texty (POKYNY / Ahoj / Počkej prosím, až ti dá zadavatel testu heslo. / Heslo: / Začít) potvrzeny screenshotem živého Playeru - shoda s extrahovaným obsahem."
+  }
+}

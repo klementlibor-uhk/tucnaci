@@ -1,0 +1,43 @@
+{
+  "screen_number": 5,
+  "screen_code": "G4_DIR_03",
+  "title": "Vyber svou odpověď",
+  "kind": "directions",
+  "activity_id": 155931,
+  "source": {
+    "folder": "98628",
+    "file_en": "233130.html",
+    "file_cs": "233130_cs-CZ.html"
+  },
+  "texts": {
+    "heading": "Vyber svou odpověď",
+    "intro": "Pokud si svou odpovědí nejsi jistý/jistá, vyber tu, o které si myslíš, že je nejlepší.",
+    "practice_single_choice": {
+      "instruction_tip": "U otázek jako je tato, klikni na kolečko vedle odpovědi, kterou vybereš.",
+      "table_label": "Vyber jednu odpověď",
+      "question": "Kolik minut má hodina?",
+      "choices": ["12", "24", "60", "120"],
+      "hidden_en_leftover": "Select ONE statement. (skryto přes CSS třídu 'hide' - není vidět žákovi)"
+    },
+    "practice_dropdown": {
+      "table_label": "Vyber odpověď z rozbalovací nabídky",
+      "question": "Použij rozbalovací nabídku pro vyjádření, kolik dní má jeden týden.",
+      "placeholder": "Vyber jednu možnost.",
+      "choices": ["3", "7", "10"],
+      "tip": "Abys viděl/a zbytek obrazovky, použij posuvník."
+    },
+    "practice_hotspot_multiselect": {
+      "table_label": "Vyber všechny správné odpovědi",
+      "question": "Klikni na všechna zvířata, která mají čtyři nohy.",
+      "tip1": "Klikni na \"Vyber jednu možnost\" pro zobrazení možných odpovědí a potom klikni na tu, kterou zvolíš. (pozn.: tento tip patří k dropdown cvičení, zobrazen ve stejném sloupci)",
+      "tip2": "Zde potřebuješ vybrat více než jednu odpověď.",
+      "tip3": "Procvič si výběr kliknutím na všechny odpovědi, které považuješ za správné."
+    }
+  },
+  "images": [
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/To-Be-or...-100px-left.png" },
+    { "role": "hotspot_animals", "local_path": "media/images/pokyny/27557/Snake_bird_camel_snail_deer_bluebox.png" }
+  ],
+  "decision": "Jen výběr jedné odpovědi + klik na obrázek (spec kap.4).",
+  "notes": "ÚPRAVA NUTNÁ: z původních 3 cvičení (jednoduchý výběr, rozbalovací nabídka, hotspot-klik na obrázek) ponechat pouze cvičení 'jednoduchý výběr' (Kolik minut má hodina?) a cvičení 'klik na obrázek' (zvířata se 4 nohama); cvičení s rozbalovací nabídkou (practice_dropdown) vypustit, protože se v úloze Tučňáci nepoužívá. Skrytý anglický řetězec 'Select ONE statement.' potvrzen jako neviditelný (CSS .hide) - není třeba překládat."
+}

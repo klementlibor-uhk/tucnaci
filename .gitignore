@@ -1,0 +1,9 @@
+# Originální offline Player dodavatele (Sonet/Assessment Master) - jen lokální referenční zdroj,
+# nekopíruje se do repozitáře (licenční podmínky IEA zatím neověřeny, viz spec kap. 1 a 9).
+G4_USB_TEST_FINAL_PLAYER/
+Resources.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp

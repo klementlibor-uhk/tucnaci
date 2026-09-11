@@ -1,0 +1,42 @@
+{
+  "screen_number": 16,
+  "screen_code": "M71A06",
+  "title": "Potrava",
+  "kind": "task_screen",
+  "activity_id": 155998,
+  "source": {
+    "folder": "93036",
+    "file_en": "253749.html",
+    "file_cs": "253749_cs-CZ.html"
+  },
+  "response_ids": ["MQ71A05A_T (volby MQ71A05A_T_MQ71A05A__1 az __4)", "MQ71A05B_T"],
+  "interaction": "Výběr jedné možnosti (A) + přetahování obrázků ryb do tabulky (B)",
+  "texts": {
+    "PSI.Title": "Potrava",
+    "M71A06.Text1": "Zdravý tučňák sežere za rok: 60 kg kostnatých ryb, 45 kg ostatních ryb.",
+    "M71A06.Choice1": "A. Který zápis vyjadřuje, kolik kg ryb sežere 4 350 zdravých tučňáků za jeden rok?",
+    "choices": ["4 350 + 60 + 45", "4 350 · 60 · 45", "4 350 · (60 + 45)", "4 350 + (60 · 45)"],
+    "hidden_en_leftover": "Select ONE statement. (skryto přes CSS třídu 'hide')",
+    "M71A06.Choice2": "B. Doplň obrázky do tabulky tak, aby ukazovala množství ryb, které jeden zdravý tučňák sežere za jeden rok.",
+    "M71A06.Text2": "Přetáhni symboly [ikona] do tabulky a vytvoř tak obrázkový graf.",
+    "tabs": ["Obrázek", "Výška", "Hmotnost", "Počet", "Potrava (aktivní)", "Příspěvek"],
+    "PSI.TabMainTitle": "Tučňák nejmenší",
+    "url_bar": "https://www.IEA.eTIMSS.com/tucnaci",
+    "PSI.TitleTitle": "Potrava, kterou sežere zdravý tučňák nejmenší",
+    "M71A06.TableHeader1": "Druh ryby",
+    "M71A06.TableHeader2": "Potrava na jeden rok",
+    "M71A06.TableText1": "Kostnaté ryby (60 kg)",
+    "M71A06.TableText4": "Ostatní ryby (45 kg)",
+    "M71A06.Text3": "= 10 kg ryb",
+    "M71A06.Text4": "= 5 kg ryb"
+  },
+  "images": [
+    { "role": "webpage_background", "local_path": "media/images/littlepenguins/Screen6_Webpage.jpg" },
+    { "role": "table_background", "local_path": "media/images/littlepenguins/Screen6_Table.png" },
+    { "role": "drag_icon_in_sentence", "local_path": "media/images/littlepenguins/Screen6_Icon_in_sentence.png" },
+    { "role": "drag_item_whole_fish", "local_path": "media/images/littlepenguins/Screen6_WholeFish.png" },
+    { "role": "drag_item_half_fish", "local_path": "media/images/littlepenguins/Screen6_HalfFish.png" }
+  ],
+  "process_events": ["SCREEN_LOADED", "MQ71A05A_T_MQ71A05A__n (klik na volbu; response nebo cleared:true)", "MQ71A05B_T (přetažení obrázku ryby; dragged - přesný payload nutno ověřit v Code fázi, viz poznámka verifikace)"],
+  "notes": "Ověřeno proti náhledu (docx, obrázek 7/25) - texty a číselné hodnoty (60kg, 45kg, 4350, 10kg/5kg) se shodují. Drag&drop komponenta pro MQ71A05B_T povoluje až 12 kusů do každé ze 2 zón (data-matchmax=12), odpověď se skládá finálně jako 'MQ71A05BA<id>,MQ71A05BB<id>,...' (viz saveM71A06 v timss.js)."
+}

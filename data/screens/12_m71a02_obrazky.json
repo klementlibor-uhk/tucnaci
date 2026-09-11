@@ -1,0 +1,38 @@
+{
+  "screen_number": 12,
+  "screen_code": "M71A02",
+  "title": "Obrázky",
+  "kind": "task_screen",
+  "activity_id": 155994,
+  "source": {
+    "folder": "93026",
+    "file_en": "228936.html",
+    "file_cs": "228936_cs-CZ.html"
+  },
+  "response_ids": ["MQ71A01_T"],
+  "interaction": "Hottext: výběr obrázku s největším obsahem (klik na jeden ze 4 obrázků)",
+  "texts": {
+    "PSI.Title": "Tučňák nejmenší",
+    "M71A02.Text1": "Zde je několik obrázků tučňáka nejmenšího.",
+    "M71A02.Text2": "Který obrázek má největší obsah?",
+    "M71A02.Text3": "(Označ obrázek.)",
+    "tabs": ["Obrázek", "Výška", "Hmotnost", "Počet", "Potrava", "Příspěvek"],
+    "PSI.TabMainTitle": "Tučňák nejmenší",
+    "url_bar": "https://www.IEA.eTIMSS.com/tucnaci",
+    "options": [
+      { "id": "MQ71A01__1", "dims": "6 cm x 4 cm" },
+      { "id": "MQ71A01__2", "dims": "5 cm x 5 cm" },
+      { "id": "MQ71A01__3", "dims": "7 cm x 3 cm" },
+      { "id": "MQ71A01__4", "dims": "2 cm x 9 cm" }
+    ]
+  },
+  "images": [
+    { "role": "webpage_background", "local_path": "media/images/littlepenguins/Screen2_Webpage.jpg" },
+    { "role": "option_1", "local_path": "media/images/littlepenguins/Screen2_Selectable1.png" },
+    { "role": "option_2", "local_path": "media/images/littlepenguins/Screen2_Selectable2.png" },
+    { "role": "option_3", "local_path": "media/images/littlepenguins/Screen2_Selectable3.png" },
+    { "role": "option_4", "local_path": "media/images/littlepenguins/Screen2_Selectable4.png" }
+  ],
+  "process_events": ["SCREEN_LOADED", "MQ71A01_T (klik na obrázek; cleared:true při zrušení výběru)"],
+  "notes": "Ověřeno proti náhledu (docx, obrázky 2/25 a 3/25) - texty a hodnoty rozměrů (4x6, 5x5, 3x7, 9x2 cm) se shodují."
+}

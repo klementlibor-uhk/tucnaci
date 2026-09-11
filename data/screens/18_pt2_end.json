@@ -1,0 +1,27 @@
+{
+  "screen_number": 18,
+  "screen_code": "PT2_END_G4",
+  "title": "Konec testu",
+  "kind": "info",
+  "activity_id": 155976,
+  "source": {
+    "folder": "97542",
+    "file_en": "216877.html",
+    "file_cs": "216877_cs-CZ.html"
+  },
+  "texts": {
+    "PT2_END.Text1": "Jsi na konci Části 2.",
+    "PT2_END.Text2": "Můžeš se vrátit k libovolné otázce, na kterou jsi neodpověděl/a.",
+    "PT2_END.Text3": "Také si můžeš své odpovědi na otázky překontrolovat.",
+    "PT2_END.Text4": "Pokud chceš skončit, klikni na tlačítko Další.",
+    "sPT2_END.Next": "Další"
+  },
+  "images": [],
+  "process_events": ["SCREEN_LOADED", "PART2_CLOCK_STOP (zastavení časomíry)"],
+  "decision": "Možnost vrátit se k otázkám, pak odeslat (spec kap.6.1 řádek 18).",
+  "notes": "ÚPRAVA NUTNÁ: text 'Části 2' přeformulovat (projekt má jen jednu část/úlohu Tučňáci, ne dvoudílný test). Zde v originále se zastavuje časomíra (PART2_CLOCK_STOP).",
+  "verified_against_live_player": {
+    "date": "2026-09-11",
+    "result": "Texty (Jsi na konci Části 2. / Můžeš se vrátit... / Také si můžeš... / Pokud chceš skončit... / Další) potvrzeny screenshotem živého Playeru - shoda s extrahovaným obsahem."
+  }
+}

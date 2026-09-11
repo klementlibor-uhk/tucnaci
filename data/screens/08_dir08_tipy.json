@@ -1,0 +1,34 @@
+{
+  "screen_number": 8,
+  "screen_code": "G4_DIR_08",
+  "title": "Tipy",
+  "kind": "directions",
+  "activity_id": 155937,
+  "source": {
+    "folder": "98640",
+    "file_en": "233475.html",
+    "file_cs": "233475_cs-CZ.html"
+  },
+  "texts": {
+    "heading": "Tipy",
+    "intro": "Přidáváme dvě rady před tím, než začneš.",
+    "tip_zedy": {
+      "heading": "Zedy",
+      "text": "V úlohách, kde se používají peníze, je speciální měna zed."
+    },
+    "tip_rolovani": {
+      "heading": "Rolování",
+      "text": "Nezapomeň, že možná budeš potřebovat odrolovat stránku, aby se ti zobrazila celá otázka."
+    },
+    "next_tip_before_icon": "Klikni na",
+    "next_tip_after_icon": "a přejdi na další stránku."
+  },
+  "images": [
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/Happy-fella-100px-left.png" },
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/Disco-100px-left_Disco 100px right.png" },
+    { "role": "decorative", "local_path": "media/images/pokyny/27557/Kneeling-100px-right.png" },
+    { "role": "next_button_icon", "local_path": "media/images/pokyny/27557/Next_button.png" }
+  ],
+  "decision": "Ponechat (spec kap.4).",
+  "notes": "Přesně odpovídá potřebě úlohy Tučňáci: 'zedy' se používají v M71A07 (Příspěvek), rolování je relevantní obecně (viz otevřená otázka kap.9 o dostupnosti zvýrazňovače / rolování na jednotlivých obrazovkách)."
+}

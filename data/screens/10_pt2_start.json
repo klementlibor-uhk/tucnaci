@@ -1,0 +1,32 @@
+{
+  "screen_number": 10,
+  "screen_code": "PT2_START_G4",
+  "title": "Začátek testu",
+  "kind": "password_gate",
+  "activity_id": 155965,
+  "source": {
+    "folder": "97541",
+    "file_en": "228926.html",
+    "file_cs": "228926_cs-CZ.html"
+  },
+  "texts": {
+    "PT2_START_G4.Header": "Část 2",
+    "PT2_START_G4.Paragraph1": "Na vypracování této části testu budeš mít 36 minut.",
+    "PT2_START_G4.Paragraph2": "Každou otázku si pečlivě přečti a odpověz na ni, jak nejlépe umíš. Pokud si svou odpovědí nejsi jistý/jistá, napiš nebo vyber takovou odpověď, o které si myslíš, že je nejlepší, a přejdi k další otázce testu.",
+    "PT2_START_G4.Paragraph3": "Prosím počkej, až ti dá zadavatel testu heslo.",
+    "PT2_START_G4.PasswordText": "Heslo pro Část 2:",
+    "PT2_start_G4.Next": "Začít"
+  },
+  "password_field": { "id": "password1", "maxlength": 4, "type": "text" },
+  "images": [
+    { "role": "logo", "local_path": "media/images/common/timss-logo-new.png" }
+  ],
+  "process_events": ["PART2_START (Booklet Part = 'Part2', login success, incorrect attempts)", "PART2_CLOCK_START (spouští se na této obrazovce přechodem 'startTimer')", "POPUP_PW_INCORRECT_OPEN", "POPUP_PW_INCORRECT_CLOSE"],
+  "decision": "Text upravit na 18 minut a bez 'Části 2'; heslo od zadavatele; start časovače (spec kap.6.1 řádek 10).",
+  "notes": "ÚPRAVA NUTNÁ: (1) nahradit '36 minut' za '18 minut'; (2) nadpis 'Část 2' a formulace 'Heslo pro Část 2' přeformulovat, protože v projektu je jen jedna část testu (Tučňáci), ne dvoudílný TIMSS test. Zde v originále startuje časomíra (PART2_CLOCK_START) - v projektu zde start 18min limitu.",
+  "verified_against_live_player": {
+    "date": "2026-09-11",
+    "test_password": "0000",
+    "note": "Stejné testovací heslo '0000' jako u DIR_START_G4 (screen 2) - obě obrazovky s heslem od zadavatele v aktuálním testovacím sešitu sdílejí toto heslo."
+  }
+}
