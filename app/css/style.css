@@ -1,0 +1,178 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #eef3f6;
+  color: #222;
+}
+
+#app {
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 12px rgba(0,0,0,0.08);
+}
+
+#app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1b2a4a;
+  color: #fff;
+  padding: 10px 20px;
+}
+#app-header .title { font-weight: bold; font-size: 18px; }
+#timer-display { font-size: 22px; font-weight: bold; background: #0f1a30; padding: 4px 12px; border-radius: 6px; }
+
+#main-area { display: flex; flex: 1; min-height: 0; }
+
+#progress-bar {
+  width: 46px;
+  background: #0f1a30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  gap: 6px;
+  overflow-y: auto;
+}
+#progress-bar.hidden { display: none; }
+.progress-chip { width: 26px; height: 26px; border-radius: 50%; background: #4a5b7a; }
+.progress-chip.current { background: #6fbf3c; }
+.progress-chip.visited { background: #3a78c9; }
+
+#screen-container {
+  flex: 1;
+  padding: 24px 32px;
+  overflow-y: auto;
+}
+
+#app-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #1b6fb8;
+}
+#app-footer.hidden { display: none; }
+#app-footer button {
+  background: #f5a623;
+  border: none;
+  color: #1b2a4a;
+  font-weight: bold;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+#app-footer button.hidden { visibility: hidden; }
+#app-footer .debug-export { background: transparent; color: #cfe6fb; font-weight: normal; font-size: 12px; border: 1px solid #cfe6fb; }
+
+.primary-btn, .arrow-btn {
+  background: #f5a623;
+  border: none;
+  color: #1b2a4a;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 14px;
+}
+.arrow-btn.small { padding: 4px 12px; margin: 0 4px; }
+.inline-next-btn { display: inline-block; background: #f5a623; border-radius: 4px; padding: 2px 8px; color: #1b2a4a; font-weight: bold; }
+
+/* Login */
+.login-box { max-width: 340px; margin: 60px auto; text-align: center; }
+.login-logo img { max-width: 140px; margin-bottom: 20px; }
+.login-form { background: #1b6fb8; border-radius: 8px; padding: 20px; }
+.login-row { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 6px; margin-bottom: 10px; padding: 6px 10px; }
+.login-input { border: none; outline: none; flex: 1; font-size: 15px; }
+.login-error { color: #ffe082; min-height: 18px; font-size: 13px; margin-bottom: 6px; }
+
+/* Password gate */
+.password-box { max-width: 480px; margin: 40px auto; }
+.password-header { background: #1b6fb8; color: #fff; padding: 8px 14px; font-weight: bold; border-radius: 6px 6px 0 0; }
+.password-heading { font-size: 26px; margin: 14px 0; }
+.password-input-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+.password-input { font-size: 16px; padding: 6px 10px; border: 1px solid #aaa; border-radius: 4px; width: 100px; }
+
+/* Directions / info */
+.directions-box, .info-box, .logoff-box { max-width: 640px; margin: 0 auto; }
+.hint-text { color: #555; font-style: italic; }
+.table-label { color: #3366ff; font-weight: bold; }
+.practice-hotspot-img { max-width: 100%; margin-top: 10px; }
+
+/* Task screens */
+.task-screen { display: flex; gap: 24px; }
+.left-panel { flex: 1; min-width: 320px; }
+.right-panel { flex: 1; min-width: 360px; }
+.psi-title { margin-top: 0; }
+.m71a01-image { max-width: 260px; display: block; margin-top: 14px; border-radius: 6px; }
+.url-bar { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 4px 10px; font-size: 12px; color: #555; margin-bottom: 6px; }
+.webpage-mock { background-size: cover; background-position: center; border-radius: 6px; padding: 12px; min-height: 420px; position: relative; }
+.webpage-title { background: rgba(255,255,255,0.85); font-weight: bold; font-size: 20px; text-align: center; padding: 6px; border-radius: 4px; }
+.webpage-tabs { display: flex; margin-top: 8px; }
+.webpage-tab { flex: 1; text-align: center; background: rgba(90,120,150,0.8); color: #fff; padding: 6px 2px; font-size: 12px; cursor: pointer; }
+.webpage-tab.active { background: #f5a623; color: #1b2a4a; font-weight: bold; }
+.webpage-inner { background: rgba(255,255,255,0.9); margin-top: 8px; border-radius: 6px; padding: 12px; min-height: 260px; }
+.tab-inner-content img { max-width: 100%; }
+
+/* Hottext */
+.hottext-group { display: flex; flex-wrap: wrap; gap: 14px; margin: 12px 0; }
+.hottext-option { cursor: pointer; text-align: center; border: 3px solid transparent; border-radius: 6px; padding: 4px; }
+.hottext-option img { width: 90px; display: block; }
+.hottext-option.selected { border-color: #f5a623; background: #fff3d6; }
+.hottext-label { font-size: 12px; }
+.webpage-preview-img { max-width: 160px; }
+.webpage-preview-img.hidden { display: none; }
+
+/* Choice */
+.choice-group { margin: 10px 0; }
+.choice-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; cursor: pointer; }
+.choice-radio { width: 18px; height: 18px; border: 2px solid #888; border-radius: 50%; display: inline-block; }
+.choice-row.selected .choice-radio { background: #f5a623; border-color: #f5a623; }
+
+/* Number field + keypad */
+.number-field-wrap { display: inline-flex; align-items: center; gap: 4px; }
+.number-field { display: inline-block; min-width: 60px; border: 2px solid #6fbf3c; border-radius: 4px; padding: 4px 8px; background: #fff; cursor: text; }
+.math-keypad { position: absolute; z-index: 50; background: #1b6fb8; border-radius: 8px; padding: 8px; display: grid; grid-template-columns: repeat(4, 44px); gap: 4px; }
+.math-keypad.hidden { display: none; }
+.keypad-btn { padding: 10px 0; font-size: 16px; border: none; border-radius: 4px; background: #fff; cursor: pointer; }
+.keypad-ok { grid-column: span 2; background: #6fbf3c; color: #fff; font-weight: bold; }
+
+/* Sortable */
+.sortable-list { list-style: none; display: flex; gap: 10px; padding: 0; margin: 12px 0; }
+.sortable-item { background: #3a78c9; color: #fff; padding: 14px 10px; border-radius: 6px; cursor: grab; text-align: center; min-width: 70px; }
+.sort-header { display: flex; justify-content: space-between; font-weight: bold; color: #666; max-width: 400px; }
+
+/* Slider */
+.slider-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+.slider-tag { width: 90px; font-size: 12px; }
+.slider-value { min-width: 40px; font-weight: bold; }
+.range-scale { display: flex; justify-content: space-between; max-width: 300px; font-size: 12px; color: #666; }
+.shark-img { max-width: 140px; float: right; }
+.healthy-caption { clear: both; font-weight: bold; text-align: center; padding-top: 8px; }
+.height-diagram { max-width: 200px; display: block; margin: 0 auto 10px; }
+.m71a07-penguin { max-width: 120px; float: right; }
+.speech-bubble { clear: both; text-align: center; font-weight: bold; padding-top: 8px; }
+.inner-title { font-weight: bold; margin-bottom: 8px; }
+
+/* Drag&drop table */
+.dragdrop-table-wrap { display: flex; gap: 16px; margin-top: 10px; }
+.dragdrop-tray { display: flex; flex-direction: column; gap: 8px; background: #f5f5f5; padding: 8px; border-radius: 6px; }
+.dragdrop-item { width: 30px; cursor: grab; }
+.dragdrop-zones { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.dragdrop-zone { border: 2px dashed #472f92; border-radius: 6px; padding: 8px; min-height: 60px; }
+.dragdrop-zone-label { font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+.dragdrop-zone-items { display: flex; flex-wrap: wrap; gap: 4px; }
+.dragdrop-item.dropped { width: 22px; cursor: default; }
+
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.modal-box { background: #fff; border: 2px solid #1b6fb8; border-radius: 8px; padding: 24px 30px; text-align: center; max-width: 320px; }
+.modal-text { font-size: 16px; margin-bottom: 6px; }
+
+.hidden { display: none !important; }

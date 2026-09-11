@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tučňáci nejmenší</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="app-header">
+      <span class="title">TIMSS 2023 – Tučňáci nejmenší</span>
+      <span id="timer-display">18:00</span>
+    </div>
+    <div id="main-area">
+      <div id="progress-bar" class="hidden"></div>
+      <div id="screen-container"></div>
+    </div>
+    <div id="app-footer" class="hidden">
+      <button id="nav-back">&larr; Zpět</button>
+      <span>
+        <button id="export-events-btn" class="debug-export">Stáhnout events.csv</button>
+        <button id="export-responses-btn" class="debug-export">Stáhnout responses.csv</button>
+      </span>
+      <button id="nav-next">Další &rarr;</button>
+    </div>
+  </div>
+
+  <script src="js/manifest.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/interactions.js"></script>
+  <script src="js/screens.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
