@@ -67,11 +67,10 @@ zadavatele (Začátek pokynů, Začátek testu) je `0000` (viz `js/manifest.js`)
 
 ## Známé mezery enginu (krok 3, k dořešení v kroku 5 "Kontrola vzhledu a chování")
 
-- **Přetahování (drag&drop) na dotykových zařízeních**: řazení tučňáků (M71A04) a přetahování ryb do
-  tabulky (M71A06) používá nativní HTML5 drag&drop (`draggable`, `dragstart/dragover/drop`). To
-  spolehlivě funguje myší, ale **na tabletech/dotykových obrazovkách nativní HTML5 drag&drop většinou
-  nefunguje bez dalšího dopracování** (potřeba by byly dotykové/pointer events jako náhrada). Protože
-  TIMSS testy běžně probíhají na tabletech, je to důležité doladit před pilotáží (krok 7).
+- **Přetahování (drag&drop)**: řazení tučňáků (M71A04) a přetahování ryb do tabulky (M71A06) používá
+  nativní HTML5 drag&drop (`draggable`, `dragstart/dragover/drop`) - funguje spolehlivě myší. Na
+  dotykových zařízeních (tablety) by bez úpravy (dotykové/pointer events) nemuselo fungovat, ale
+  podle rozhodnutí 2026-09-11 se bude testovat jen na počítačích s myší, takže úprava není potřeba.
 - Rozvržení "task_screen" (levý panel + pravý panel s napodobeninou webové stránky) je navržené pro
   šířku obrazovky nad cca 900px; na užších oknech se pravý panel může vodorovně scrollovat.
 - Ověření skutečného chování zvýrazňovače (highlighter) a přesný payload živé události `MQ71A05B_T`
