@@ -488,7 +488,13 @@ p { margin: 0 0 12px; }
   font-size: 34px; font-weight: 700;
 }
 .drag-target.filled { border: 2px solid #2E74B5; }
-.drag-token { font-size: 34px; font-weight: 700; line-height: 1; cursor: pointer; }
+/* Cislo v ramecku vyplnuje cely ctverecek, aby slo chytit kdekoliv uvnitr */
+.drag-token {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; font-weight: 700; line-height: 1;
+  cursor: pointer;
+}
 .drag-ghost { background: #fff; }
 
 /* ---------- Ukolove obrazovky ---------- */
