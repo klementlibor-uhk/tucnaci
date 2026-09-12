@@ -18,16 +18,64 @@ function showModal(text, buttonLabel, onClose) {
 let scrollDebounce = null;
 let scrollInProgress = false;
 
+function maxScrollOf(container) {
+  return container.scrollHeight - container.clientHeight;
+}
+
+// Modry pruh vpravo je funkcni posuvnik (jako v originale) - nativni je skryty.
+function updateScrollThumb() {
+  const container = document.getElementById("screen-container");
+  const bar = document.getElementById("scroll-bar");
+  const thumb = document.getElementById("scroll-thumb");
+  const max = maxScrollOf(container);
+  if (max <= 4) {
+    thumb.classList.remove("show");
+    return;
+  }
+  thumb.classList.add("show");
+  const travel = bar.clientHeight - thumb.offsetHeight - 12;
+  thumb.style.top = (6 + Math.round((container.scrollTop / max) * travel)) + "px";
+}
+
+function setupScrollbarDragging() {
+  const container = document.getElementById("screen-container");
+  const bar = document.getElementById("scroll-bar");
+  const thumb = document.getElementById("scroll-thumb");
+  let dragStartY = null;
+  let scrollAtStart = 0;
+
+  thumb.addEventListener("mousedown", function (e) {
+    e.preventDefault();
+    dragStartY = e.clientY;
+    scrollAtStart = container.scrollTop;
+    logTrackEvent("SCROLL_DRAG_START", { scrollFrom: container.scrollTop });
+  });
+
+  document.addEventListener("mousemove", function (e) {
+    if (dragStartY === null) return;
+    const travel = bar.clientHeight - thumb.offsetHeight - 12;
+    const max = maxScrollOf(container);
+    container.scrollTop = scrollAtStart + ((e.clientY - dragStartY) / travel) * max;
+    updateScrollThumb();
+  });
+
+  document.addEventListener("mouseup", function () {
+    if (dragStartY === null) return;
+    dragStartY = null;
+    logTrackEvent("SCROLL_DRAG_STOP", { scrollTo: container.scrollTop });
+  });
+}
+
 function setupScrollTracking() {
   const container = document.getElementById("screen-container");
-  const thumb = document.getElementById("scroll-thumb");
-  const isScrollable = container.scrollHeight > container.clientHeight + 4;
+  const isScrollable = maxScrollOf(container) > 4;
 
-  thumb.classList.toggle("show", isScrollable);
+  updateScrollThumb();
   logTrackEvent("SCROLL_ACTIVE", isScrollable ? "Y" : "N");
   scrollInProgress = false;
 
   container.onscroll = function () {
+    updateScrollThumb();
     const data = {
       ScrollTop: container.scrollTop,
       Clientheight: container.clientHeight,
@@ -62,6 +110,8 @@ function init() {
     if (keypad.contains(e.target) || e.target.closest(".number-field")) return;
     closeKeypad();
   });
+
+  setupScrollbarDragging();
 
   const baseRender = renderScreen;
   renderScreen = function () {

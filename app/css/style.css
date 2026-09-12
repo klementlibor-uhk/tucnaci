@@ -172,7 +172,9 @@ body {
   padding-top: 40px;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: none;          /* rolovani obsluhuje modry pruh vpravo */
 }
+#screen-container::-webkit-scrollbar { display: none; }
 
 #scroll-bar {
   position: absolute;
@@ -182,15 +184,15 @@ body {
   background-color: #8cd7f7;
   border-bottom-right-radius: 3px;
   z-index: 99;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
 }
 #scroll-thumb {
+  position: absolute;
+  left: 2px; top: 6px;
   width: 35px; height: 197px;
   background: url("../../data/media/images/ui/scrollbar.jpg") no-repeat;
   background-size: 100% 100%;
   border-radius: 3px;
+  cursor: pointer;
   display: none;
 }
 #scroll-thumb.show { display: block; }
@@ -317,13 +319,14 @@ p { margin: 0 0 12px; }
 }
 .intro-text-content { width: 290px; text-align: center; padding: 10px; margin: auto; }
 .intro-text-content .header2 { font-size: 28px; margin-bottom: 10px; color: #000; }
-.intro-text-content p { color: #C55A11; margin-bottom: 10px; }
-.intro-text-content strong, .info-box strong { color: #000; }
+.intro-text-content p { color: #000; margin-bottom: 10px; }
+.info-box strong { color: #000; }
 
+/* Popisek, pole i tlacitko jsou zarovnane na stred pole (ikona zamku visi vlevo mimo) */
 .password-content { width: 250px; margin: 10px auto; text-align: center; }
-.password-label { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
-.password-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
-.lock-icon { color: #828080; font-size: 18px; }
+.password-label { font-weight: 700; font-size: 16px; margin-bottom: 6px; padding-left: 24px; }
+.password-row { display: flex; align-items: center; gap: 6px; }
+.lock-icon { color: #828080; font-size: 18px; width: 18px; flex: none; }
 .password-input {
   width: 80%; height: 39px;
   border: 1px solid #828080;
@@ -333,6 +336,7 @@ p { margin: 0 0 12px; }
   padding: 0 8px;
   font-family: "Open Sans", sans-serif;
 }
+.password-actions { padding-left: 24px; text-align: left; }
 .orange-btn {
   width: 202px;
   margin-top: 15px;
@@ -372,7 +376,7 @@ p { margin: 0 0 12px; }
   border-bottom: 2px solid #2E74B5;
   padding-bottom: 4px;
   max-width: 440px;
-  margin: 22px 0 14px;
+  margin: 34px 0 18px;
 }
 .hint-row { display: flex; align-items: center; gap: 10px; margin: 16px 0; }
 .hint-row + .hint-row { margin-top: 46px; }
@@ -409,8 +413,31 @@ p { margin: 0 0 12px; }
 .chip-swatch.current { background: #80c043; }
 .chip-swatch.answered { background: #0471b2; }
 .chip-swatch.unanswered { background: #babcbd; }
-.answer-row { display: flex; align-items: center; gap: 8px; }
-.keypad-illustration { position: static; display: inline-grid; box-shadow: none; }
+.answer-row { display: flex; align-items: center; gap: 8px; margin-bottom: 36px; }
+/* Ukazka klavesnice s popisky u prislusnych klaves (jako v originale) */
+.keypad-demo-row { display: flex; align-items: flex-start; gap: 20px; margin-top: 24px; }
+.keypad-demo-row .mascot { padding-top: 60px; }
+.keypad-demo { display: flex; align-items: flex-start; margin: 0 0 10px; }
+.math-keypad.keypad-illustration {
+  position: static;
+  display: inline-grid;
+  box-shadow: none;
+  flex: none;
+}
+.keypad-callouts { display: flex; flex-direction: column; padding-top: 32px; }
+.callout { display: flex; align-items: center; gap: 8px; height: 50px; }
+.callout-arrow { color: #1F4E79; font-size: 22px; line-height: 1; }
+.callout-box {
+  border: 2px solid #F0A400;
+  border-radius: 6px;
+  background: #fff;
+  padding: 5px 12px;
+  font-size: 14px;
+  color: #1F3864;
+  white-space: nowrap;
+}
+.callout-below { display: flex; align-items: center; gap: 8px; margin: 0 0 70px 120px; }
+.section-end-line { border-bottom: 1px solid #9DC3E6; max-width: 440px; margin-top: 36px; }
 
 /* Cviceni: klikani na obrazky (vyber vice odpovedi) */
 .hotspot-wrap { position: relative; display: inline-block; margin: 6px 0 10px; }
@@ -436,6 +463,7 @@ p { margin: 0 0 12px; }
   font-size: 34px; font-weight: 700;
 }
 .drag-target.filled { border: 2px solid #2E74B5; }
+.drag-token { font-size: 34px; font-weight: 700; line-height: 1; cursor: pointer; }
 
 /* ---------- Ukolove obrazovky ---------- */
 .task-screen { display: flex; }
@@ -490,7 +518,7 @@ p { margin: 0 0 12px; }
   cursor: pointer; border-radius: 4px;
   max-width: 430px;
 }
-.choice-row.selected { background: #bddce1; }
+/* V originale se podbarvuje jen kolecko, ne cely radek */
 .choice-radio {
   width: 34px; height: 34px; flex: none;
   border: 2px solid #000; border-radius: 50%;
@@ -508,7 +536,7 @@ p { margin: 0 0 12px; }
   border-radius: 3px;
   background: #fff;
   min-width: 145px;
-  height: 35px;
+  min-height: 35px;   /* roste, kdyz zak zada zlomek */
   padding: 2px 8px;
   font-size: 18px;
   vertical-align: middle;

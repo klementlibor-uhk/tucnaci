@@ -77,8 +77,10 @@ function ensureKeypad() {
   return kb;
 }
 
-// Staticka ukazka klavesnice pro obrazovku Pokynu (needituje, jen ilustrace).
+// Staticka ukazka klavesnice s popisky u prislusnych klaves (jen ilustrace, needituje).
 function buildKeypadIllustration() {
+  const demo = el("div", "keypad-demo");
+
   const kb = el("div", "math-keypad keypad-illustration");
   kb.appendChild(el("div", "keypad-header", "✥"));
   KEYPAD_LAYOUT.forEach(function (key) {
@@ -87,7 +89,32 @@ function buildKeypadIllustration() {
     else btn.textContent = key.label;
     kb.appendChild(btn);
   });
-  return kb;
+  demo.appendChild(kb);
+
+  // Popisky sedi na radky klavesnice: minus, zlomek, mazani, OK
+  const callouts = el("div", "keypad-callouts");
+  [
+    "Zadání znaménka mínus (klikni před číslem)",
+    "Zadání zlomku",
+    "Vymazání",
+    "Zavření číselné klávesnice",
+  ].forEach(function (text) {
+    const row = el("div", "callout");
+    row.appendChild(el("span", "callout-arrow", "⬅"));
+    row.appendChild(el("div", "callout-box", text));
+    callouts.appendChild(row);
+  });
+  demo.appendChild(callouts);
+
+  const wrap = el("div", "keypad-demo-wrap");
+  wrap.appendChild(demo);
+
+  const below = el("div", "callout-below");
+  below.appendChild(el("span", "callout-arrow", "⬆"));
+  below.appendChild(el("div", "callout-box", "Zadání desetinné čárky"));
+  wrap.appendChild(below);
+
+  return wrap;
 }
 
 function openKeypad(anchorEl) {
@@ -274,6 +301,14 @@ function createDragToBoxes(fieldId, items, targets) {
     });
   });
 
+  function currentResponse() {
+    return Object.keys(placed).sort().map(function (z) { return z + ":" + placed[z]; }).join(",");
+  }
+
+  function sourceFor(itemId) {
+    return sourceRow.querySelector('[data-item-id="' + itemId + '"]');
+  }
+
   targets.forEach(function (target) {
     const zone = el("div", "drag-target");
     zone.dataset.zoneId = target.id;
@@ -284,22 +319,48 @@ function createDragToBoxes(fieldId, items, targets) {
         drop: function (event, ui) {
           const src = ui.draggable[0];
           if (src.classList.contains("used") || zone.classList.contains("filled")) return;
-          zone.textContent = src.textContent;
+
+          // Vlozene cislo lze pretazenim vratit zpet nahoru na puvodni misto.
+          const token = el("div", "drag-token", src.textContent);
+          token.dataset.itemId = src.dataset.itemId;
+          zone.appendChild(token);
           zone.classList.add("filled");
           src.classList.add("used");
           placed[target.id] = src.dataset.itemId;
-          const response = Object.keys(placed).sort().map(function (z) {
-            return z + ":" + placed[z];
-          }).join(",");
-          AppState.responses[fieldId] = response;
+          AppState.responses[fieldId] = currentResponse();
           logComponentEvent(fieldId, {
             dragged: src.dataset.itemId,
             dropped: target.id,
             endTime: nowMs(),
-            response: response,
+            response: AppState.responses[fieldId],
           });
+          $(token).draggable({ helper: "clone", revert: "invalid", appendTo: "body", zIndex: 900 });
         },
       });
+    });
+  });
+
+  // Horni rada slouzi zaroven jako misto, kam lze cislo vratit.
+  pendingInits.push(function () {
+    $(sourceRow).droppable({
+      accept: ".drag-token",
+      drop: function (event, ui) {
+        const token = ui.draggable[0];
+        const zone = token.parentElement;
+        const itemId = token.dataset.itemId;
+        zone.removeChild(token);
+        zone.classList.remove("filled");
+        delete placed[zone.dataset.zoneId];
+        const src = sourceFor(itemId);
+        if (src) src.classList.remove("used");
+        AppState.responses[fieldId] = currentResponse();
+        logComponentEvent(fieldId, {
+          dragged: itemId,
+          dropped: "source",
+          endTime: nowMs(),
+          response: AppState.responses[fieldId],
+        });
+      },
     });
   });
 

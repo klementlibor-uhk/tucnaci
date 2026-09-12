@@ -239,7 +239,6 @@ function renderPasswordGate(container, def) {
   input.className = "password-input";
   row.appendChild(input);
   pwContent.appendChild(row);
-  box.appendChild(pwContent);
 
   const actions = el("div", "password-actions");
   const startBtn = el("button", "orange-btn", "Začít →");
@@ -262,7 +261,8 @@ function renderPasswordGate(container, def) {
     }
   });
   actions.appendChild(startBtn);
-  box.appendChild(actions);
+  pwContent.appendChild(actions);
+  box.appendChild(pwContent);
   container.appendChild(box);
 }
 
@@ -423,15 +423,11 @@ function renderDirections(container, data) {
   } else if (code === "G4_DIR_05") {
     box.appendChild(el("h2", null, "Číselná klávesnice"));
     box.appendChild(el("p", "dir-intro", "U otázek, kde odpověď tvoří číslo, budeš používat číselnou klávesnici."));
-    box.appendChild(practiceRow([
-      buildKeypadIllustration(),
-    ], hintRow("pointRight", [
-      para("Zadání znaménka mínus (klikni před číslem)"),
-      para("Zadání zlomku"),
-      para("Vymazání"),
-      para("Zavření číselné klávesnice"),
-      para("Zadání desetinné čárky"),
-    ], { cream: true })));
+    // Postavicka vlevo, ukazka klavesnice s popisky u klaves vpravo (jako v originale)
+    const demoRow = el("div", "keypad-demo-row");
+    demoRow.appendChild(mascot("happy", 120));
+    demoRow.appendChild(buildKeypadIllustration());
+    box.appendChild(demoRow);
 
     box.appendChild(sectionTitle("Použij číselnou klávesnici"));
     // Uprava dle spec kap.4: cviceni s celym cislem misto zlomku.
@@ -441,6 +437,7 @@ function renderDirections(container, data) {
     box.appendChild(practiceRow([
       para("Napiš číslo 5."),
       answerRow,
+      el("div", "section-end-line"),
     ], hintRow("think", [
       para("Klikni do políčka pro odpověď a procvič si používání číselné klávesnice."),
       para("Číselnou klávesnici můžeš libovolně přesouvat po obrazovce tak, že klikneš na její horní lištu a přetáhneš ji."),
