@@ -758,13 +758,67 @@ p { margin: 0 0 12px; }
 .m71a04-left .text-b { width: 332px; }
 
 .range-title { font-weight: 700; margin-bottom: 10px; }
-.m71a05-inner .fish-scale {
-  height: 52px;
-  background: url("../../data/media/images/littlepenguins/Screen5_Fish_Scale.png") repeat-x center;
-  background-size: contain;
-  margin: 4px 0;
+.m71a05-left { width: 367px; }
+.m71a05-left .drag-line { margin: 6px 0 0 29px; }
+.drag-icon { width: 22px; vertical-align: middle; margin: 0 2px; }
+
+/* Rybi cislena osa: hotovy obrazek z originalu, hodnoty 4 000 a 5 000 lezi na 9,25 %
+   a 89,25 % jeho sirky (zmereno podle dlouhych rysek), posuvnik ma rozsah 3950-5050. */
+.fish-axis {
+  position: relative;
+  width: 430px; height: 40px;
+  margin: 95px auto 100px;
+  background: url("../../data/media/images/littlepenguins/Screen5_Fish_Scale.png") no-repeat center;
+  background-size: 100% 100%;
 }
-.range-scale { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-top: 4px; }
+.axis-slider {
+  position: absolute;
+  left: 5.25%; width: 88%;
+  top: 50%; height: 0;
+  background: none; border: none;
+}
+.axis-handle {
+  position: absolute;
+  width: 14px; height: 14px;
+  margin-left: -7px; top: -7px;
+  background: #f58220;
+  border: none; border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+}
+.axis-marker {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 87px;
+  padding: 6px 8px;
+  background: #F58220;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.25;
+  text-align: center;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #F58220;
+}
+.axis-marker::after {
+  content: "";
+  position: absolute;
+  left: 50%; margin-left: -2px;
+  width: 4px; height: 40px;
+  background: #F58220;
+}
+.slider-top .axis-marker { bottom: 42px; }
+.slider-top .axis-marker::after { bottom: -40px; }
+.slider-bottom .axis-marker { top: 42px; }
+.slider-bottom .axis-marker::after { top: -40px; }
+.scale-start, .scale-end {
+  position: absolute;
+  top: 40px;
+  transform: translateX(-50%);
+  font-size: 13px; font-weight: 700;
+}
+.scale-start { left: 9.25%; }
+.scale-end { left: 89.25%; }
 .m71a05-bottom { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; }
 .m71a05-answer { width: 200px; font-size: 14px; }
 .m71a05-answer p { margin: 0 0 6px; }

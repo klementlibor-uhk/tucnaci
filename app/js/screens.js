@@ -3,10 +3,15 @@
 // Rozvrzeni odpovida originalu: levy panel = zadani, pravy panel = obrazek webove stranky,
 // na kterem je umisteny interaktivni obsah.
 
+// Mezera uvnitr cisla (1 100) se nahrazuje pevnou mezerou, aby se cislo nelamalo na konci radku
+function fixNumbers(text) {
+  return String(text).replace(/(\d) (?=\d)/g, "$1 ");
+}
+
 function el(tag, className, text) {
   const e = document.createElement(tag);
   if (className) e.className = className;
-  if (text !== undefined && text !== null) e.textContent = text;
+  if (text !== undefined && text !== null) e.textContent = fixNumbers(text);
   return e;
 }
 
@@ -16,7 +21,7 @@ function para(text) { return el("p", null, text); }
 function richText(parts) {
   const frag = document.createDocumentFragment();
   (Array.isArray(parts) ? parts : [parts]).forEach(function (part) {
-    frag.appendChild(typeof part === "string" ? document.createTextNode(part) : el("strong", null, part.b));
+    frag.appendChild(typeof part === "string" ? document.createTextNode(fixNumbers(part)) : el("strong", null, part.b));
   });
   return frag;
 }
@@ -731,25 +736,35 @@ function renderM71A04(left, wrap) {
 }
 
 function renderM71A05(left, wrap) {
+  left.classList.add("m71a05-left");
   left.appendChild(el("div", "psi-title", "Počet tučňáků"));
   left.appendChild(para("Tučňáci, kteří nejsou zdraví, mohou být chyceni dravci."));
-  left.appendChild(question("A", "Minulý rok žilo 4 900 tučňáků. Letos jich zůstalo jen 4 350, protože ostatní chytili dravci."));
-  left.appendChild(para("Přetáhni ukazatele na správná místa na rybí číselné ose."));
+  left.appendChild(question("A", "Minulý rok žilo 4 900 tučňáků. Letos jich zůstalo jen 4 350, protože ostatní chytili dravci."));
+
+  // Pokyn k pretahovani je odsazeny pod otazkou A a obsahuje ikonu ukazatele (jako v originale)
+  const dragLine = el("p", "drag-line");
+  dragLine.appendChild(document.createTextNode("Přetáhni ukazatele "));
+  const dragIcon = document.createElement("img");
+  dragIcon.src = imgPath("media/images/littlepenguins/drag_icon.png");
+  dragIcon.className = "drag-icon";
+  dragIcon.alt = "ukazatel";
+  dragLine.appendChild(dragIcon);
+  dragLine.appendChild(document.createTextNode(" na správná místa na rybí číselné ose."));
+  left.appendChild(dragLine);
+
   left.appendChild(question("B", "Kolik tučňáků chytili dravci od minulého roku?"));
 
   const inner = el("div", "m71a05-inner");
   inner.appendChild(el("div", "range-title", "Počet tučňáků nejmenších"));
 
-  const sliders = el("div", "range-slider-wrapper");
-  sliders.appendChild(createSlider("MQ71A04AA_T", 3950, 5050, 50, 4500, "minulý rok"));
-  const scaleImg = el("div", "fish-scale");
-  sliders.appendChild(scaleImg);
-  sliders.appendChild(createSlider("MQ71A04AB_T", 3950, 5050, 50, 4500, "letos"));
-  const scale = el("div", "range-scale");
-  scale.appendChild(el("span", null, "4 000"));
-  scale.appendChild(el("span", null, "5 000"));
-  sliders.appendChild(scale);
-  inner.appendChild(sliders);
+  // Rybi osa je hotovy obrazek; hodnota 4 000 lezi na 9,25 % a 5 000 na 89,25 % jeho sirky
+  // (zmereno podle dlouhych rysek v Screen5_Fish_Scale.png), rozsah posuvniku je 3950-5050.
+  const axis = el("div", "fish-axis");
+  axis.appendChild(createAxisSlider("MQ71A04AA_T", "top", ["4 900", "minulý rok"]));
+  axis.appendChild(createAxisSlider("MQ71A04AB_T", "bottom", ["4 350", "letos"]));
+  axis.appendChild(el("span", "scale-start", "4 000"));
+  axis.appendChild(el("span", "scale-end", "5 000"));
+  inner.appendChild(axis);
 
   const bottom = el("div", "m71a05-bottom");
   const answer = el("div", "m71a05-answer");

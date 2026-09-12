@@ -448,17 +448,19 @@ function createSortable(fieldId, items, dropPositions) {
 
 // ---------- 4) Posuvnik na rybi ose - jQuery UI slider (M71A05) ----------
 
-function createSlider(fieldId, min, max, step, initial, tagText) {
-  const holder = el("div", "ui-slider");
-  const handle = el("span", "ui-slider-handle");
-  const tag = el("div", "slider-tag", tagText + " " + initial);
-  handle.appendChild(tag);
+// Ukazatel na rybi ose: oranzovy stitek s pevnym popiskem spojeny carou s bodem na ose.
+// Zak jim posouva po ose (3950-5050, krok 50), text stitku se nemeni - jako v originale.
+function createAxisSlider(fieldId, position, labelLines) {
+  const holder = el("div", "axis-slider slider-" + position);
+  const handle = el("span", "ui-slider-handle axis-handle");
+  const marker = el("div", "axis-marker");
+  labelLines.forEach(function (line) { marker.appendChild(el("div", null, line)); });
+  handle.appendChild(marker);
   holder.appendChild(handle);
 
   pendingInits.push(function () {
     $(holder).slider({
-      min: min, max: max, step: step, value: initial,
-      slide: function (event, ui) { tag.textContent = tagText + " " + ui.value; },
+      min: 3950, max: 5050, step: 50, value: 4500,
       stop: function (event, ui) {
         AppState.responses[fieldId] = String(ui.value);
         logComponentEvent(fieldId, { response: String(ui.value) });
