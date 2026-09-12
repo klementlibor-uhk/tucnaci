@@ -665,24 +665,32 @@ p { margin: 0 0 12px; }
 .keypad-frac-icon .box { width: 16px; height: 7px; background: #9aa7ad; border-radius: 1px; }
 .keypad-frac-icon .bar { width: 24px; height: 2px; background: #000; }
 
-/* Razeni (M71A04) */
-.sort-header { display: inline-flex; width: 416px; margin: 10px 50px 0; }
-.sort-header span { width: 50%; color: #777d81; font-weight: 700; }
-.sort-header span:last-child { text-align: right; }
-.sortable-list { display: flex; list-style: none; padding: 0; margin: 0 34px; }
+/* Razeni (M71A04) - velikost je zmensena tak, aby se pet tucnaku veslo do webove stranky */
+.sort-header { display: flex; justify-content: space-between; margin: 6px 4px 4px; }
+.sort-header span { color: #777d81; font-weight: 700; font-size: 14px; }
+.sortable-list { display: flex; list-style: none; padding: 0; margin: 0; }
 .sortable-item {
-  margin: 0 13px;
-  width: 90px; height: 109px;
-  text-align: center;
+  position: relative;
+  margin: 0 9px;
+  width: 66px; height: 115px;
   background: url("../../data/media/images/littlepenguins/Screen4_penguin.png") no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   border: none;
-  color: #fff;
-  font-weight: 700;
   cursor: pointer;
 }
-.sortable-item .weight { margin-top: 84px; font-size: 15px; }
-.sort-placeholder { width: 90px; height: 109px; background: #e2f9fb; border-radius: 5px; margin: 0 14px; }
+/* Hmotnost lezi v sedem pruhu, ktery zacina na 75,5 % vysky obrazku */
+.sortable-item .weight {
+  position: absolute;
+  left: 0; right: 0;
+  top: 87.7%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.sort-placeholder { width: 66px; height: 115px; background: #e2f9fb; border-radius: 5px; margin: 0 9px; }
 
 /* Posuvniky na rybi ose (M71A05) */
 .range-slider-wrapper { position: relative; width: 90%; margin-left: 25px; height: 150px; }
@@ -713,6 +721,7 @@ p { margin: 0 0 12px; }
 
 /* Detaily jednotlivych ukolovych obrazovek */
 .question-line { display: flex; align-items: baseline; }
+.question-line + .question-line { margin-top: 20px; }
 .psi-list { margin: 0 0 12px 20px; padding-left: 18px; }
 .number-field-unit { font-size: 16px; }
 

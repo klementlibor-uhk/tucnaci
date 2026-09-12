@@ -12,11 +12,22 @@ function el(tag, className, text) {
 
 function para(text) { return el("p", null, text); }
 
+// Text s tucne zvyraznenymi slovy: richText(["bezny ", {b: "tucne"}, " dal"])
+function richText(parts) {
+  const frag = document.createDocumentFragment();
+  (Array.isArray(parts) ? parts : [parts]).forEach(function (part) {
+    frag.appendChild(typeof part === "string" ? document.createTextNode(part) : el("strong", null, part.b));
+  });
+  return frag;
+}
+
 // Odstavec s pismenem ulohy (A. / B.) ve stylu originalu
 function question(letter, text) {
   const p = el("p", "question-line");
   p.appendChild(el("span", "option-letter", letter + "."));
-  p.appendChild(el("span", null, text));
+  const body = el("span");
+  body.appendChild(richText(text));
+  p.appendChild(body);
   return p;
 }
 
@@ -681,9 +692,12 @@ function renderM71A03(left, wrap) {
 
 function renderM71A04(left, wrap) {
   left.appendChild(el("div", "psi-title", "Hmotnost"));
-  left.appendChild(para("Hmotnosti tučňáků nejsou na této webové stránce seřazeny podle velikosti."));
-  left.appendChild(question("A", "Přetáhni tučňáky a seřaď je od nejtěžšího po nejlehčího."));
-  left.appendChild(question("B", "Zdravý tučňák nejmenší váží více než 1 100 g. Kolik z těchto tučňáků je zdravých?"));
+  // Tucna slova podle originalniho HTML (nejsou / nejtezsiho / nejlehciho)
+  const intro = el("p");
+  intro.appendChild(richText(["Hmotnosti tučňáků ", { b: "nejsou" }, " na této webové stránce seřazeny podle velikosti."]));
+  left.appendChild(intro);
+  left.appendChild(question("A", ["Přetáhni tučňáky a seřaď je od ", { b: "nejtěžšího" }, " po ", { b: "nejlehčího" }, "."]));
+  left.appendChild(question("B", ["Zdravý tučňák nejmenší váží více než 1 100 g. ", { b: "Kolik" }, " z těchto tučňáků je zdravých?"]));
 
   const inner = el("div", "m71a04-inner");
   const header = el("div", "sort-header");
