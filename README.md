@@ -13,10 +13,21 @@ Plná specifikace: [`docs/specifikace.md`](docs/specifikace.md).
 - [x] Krok 2: extrakce obsahu obrazovek 1–19 (kap. 6.1 specifikace) do JSON + obrázky
 - [x] Krok 3: vlastní webový engine (navigace, časovač, 6 typů interakcí) - viz `app/`
 - [x] Krok 4 (základ): záznam procesních dat dle katalogu kap. 7, export do CSV (tlačítka v patě aplikace)
+- [x] Krok 5: kontrola vzhledu a chování proti originálu – Pokyny i všech sedm obrazovek úlohy
+  prošly kontrolou po jednotlivých obrazovkách (dokončeno 12. 9. 2026)
 - [ ] Krok 4 (dokončení): odesílání po dávkách na server, ne jen lokální export
-- [ ] Krok 5: kontrola proti náhledům
 - [ ] Krok 6: generátor ID/hesel, úložiště
 - [ ] Krok 7: pilotáž
+
+### Kde se pokračuje
+
+Grafická podoba i chování odpovídají originálu a jsou odsouhlasené. Následuje **dokončení kroku 4** –
+odesílání procesních dat po dávkách a jejich podržení při výpadku připojení (dnes se data drží
+v prohlížeči a stahují se ručně jako CSV). Otevřené otázky ze specifikace (hosting a úložiště,
+hodnoticí manuál, struktura ID žáka) jsou stále nevyřešené – viz kap. 9 specifikace.
+
+Nastavení, které se nejčastěji mění, je v [`app/js/manifest.js`](app/js/manifest.js): pořadí obrazovek,
+časový limit 18 minut a hesla zadavatele (Pokyny `0000`, začátek testu `6229`).
 
 ## Struktura repozitáře
 
