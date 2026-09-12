@@ -362,7 +362,13 @@ function createDragToBoxes(fieldId, items, targets) {
             endTime: nowMs(),
             response: AppState.responses[fieldId],
           });
-          $(token).draggable({ helper: "clone", revert: "invalid", appendTo: "body", zIndex: 900 });
+          // Pri vraceni zpet se taha cely ctverecek s cislem, ne jen samotna cislice.
+          $(token).draggable({
+            helper: function () { return el("div", "drag-source drag-ghost", token.textContent); },
+            revert: "invalid",
+            appendTo: "body",
+            zIndex: 900,
+          });
         },
       });
     });
