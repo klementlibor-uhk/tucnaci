@@ -646,9 +646,19 @@ function renderM71A03(left, wrap) {
   leftLabel.appendChild(l1);
   top.appendChild(leftLabel);
 
-  const diagram = document.createElement("img");
-  diagram.src = imgPath("media/images/littlepenguins/Screen3_Height.png");
-  diagram.className = "height-diagram";
+  // Cisla na pravitku jsou v originale samostatne texty nad obrazkem. Pozice odpovidaji
+  // ryskam zmerenym primo v Screen3_Height.png (0 cm = 94,3 %, 50 = 64,7 %, 100 = 35 %,
+  // 150 = 5,3 % vysky obrazku; pravitko je vodorovne na 59,8 %).
+  const diagram = el("div", "height-img");
+  [
+    { text: "150", top: 5.3 }, { text: "cm", top: 11 },
+    { text: "100", top: 35 }, { text: "50", top: 64.7 },
+    { text: "cm", top: 88.5 }, { text: "0", top: 94.3 },
+  ].forEach(function (mark) {
+    const label = el("span", "ruler-label", mark.text);
+    label.style.top = mark.top + "%";
+    diagram.appendChild(label);
+  });
   top.appendChild(diagram);
 
   const rightLabel = el("div", "height-label");

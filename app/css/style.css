@@ -716,11 +716,31 @@ p { margin: 0 0 12px; }
 .psi-list { margin: 0 0 12px 20px; padding-left: 18px; }
 .number-field-unit { font-size: 16px; }
 
-.m71a03-inner .height-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-.height-label { width: 130px; font-size: 14px; }
+.m71a03-inner .height-row { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.height-label { width: 112px; font-size: 13px; flex: none; }
 .height-label p { margin: 0 0 6px; }
-.height-diagram { height: 210px; }
-.height-sentence { margin-top: 18px; }
+.height-field { display: flex; align-items: center; gap: 5px; }
+.height-img {
+  position: relative;
+  /* ctvercovy pomer odpovida obrazku (600x600), aby procentualni pozice cisel
+     na pravitku sedely presne na rysky */
+  width: 236px; height: 236px;
+  flex: none;
+  background: url("../../data/media/images/littlepenguins/Screen3_Height.png") no-repeat center;
+  background-size: 100% 100%;
+}
+.ruler-label {
+  position: absolute;
+  left: 59.8%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 600;
+  color: #1b4f72;
+}
+.height-sentence { margin-top: 22px; }
+/* Pole na teto obrazovce jsou uzsi, aby se veslo i "cm" (jako v originale) */
+.m71a03-inner .number-field { min-width: 88px; }
+.m71a03-inner .number-field-unit { font-size: 14px; }
 
 .m71a04-inner .numpad-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
 
