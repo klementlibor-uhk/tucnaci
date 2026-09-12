@@ -752,6 +752,10 @@ p { margin: 0 0 12px; }
 .m71a03-inner .number-field-unit { font-size: 14px; }
 
 .m71a04-inner .numpad-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.m71a04-inner .healthy-note { margin-top: 22px; }
+/* Sirky textu v zadani podle originalu, aby sedelo zalomeni radku */
+.m71a04-left .psi-text1, .m71a04-left .text-a { width: 370px; }
+.m71a04-left .text-b { width: 332px; }
 
 .range-title { font-weight: 700; margin-bottom: 10px; }
 .m71a05-inner .fish-scale {

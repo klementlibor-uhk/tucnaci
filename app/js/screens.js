@@ -645,7 +645,7 @@ function renderM71A03(left, wrap) {
   left.appendChild(para("Tučňáci nejmenší jsou nejmenším druhem tučňáků."));
   left.appendChild(para("Tučňáci císařští jsou největším druhem tučňáků."));
   left.appendChild(question("A", "Kolik měří každý tučňák?"));
-  left.appendChild(question("B", "O kolik vyšší je tučňák císařský než tučňák nejmenší?"));
+  left.appendChild(question("B", ["O kolik ", { b: "vyšší" }, " je tučňák císařský než tučňák nejmenší?"]));
 
   const inner = el("div", "m71a03-inner");
   const top = el("div", "height-row");
@@ -691,13 +691,21 @@ function renderM71A03(left, wrap) {
 }
 
 function renderM71A04(left, wrap) {
+  // Sirky textu podle originalu (_littlePenguins.scss): uvod a otazka A 370 px, otazka B 332 px
+  left.classList.add("m71a04-left");
   left.appendChild(el("div", "psi-title", "Hmotnost"));
   // Tucna slova podle originalniho HTML (nejsou / nejtezsiho / nejlehciho)
-  const intro = el("p");
+  const intro = el("p", "psi-text1");
   intro.appendChild(richText(["Hmotnosti tučňáků ", { b: "nejsou" }, " na této webové stránce seřazeny podle velikosti."]));
   left.appendChild(intro);
-  left.appendChild(question("A", ["Přetáhni tučňáky a seřaď je od ", { b: "nejtěžšího" }, " po ", { b: "nejlehčího" }, "."]));
-  left.appendChild(question("B", ["Zdravý tučňák nejmenší váží více než 1 100 g. ", { b: "Kolik" }, " z těchto tučňáků je zdravých?"]));
+
+  const questionA = question("A", ["Přetáhni tučňáky a seřaď je od ", { b: "nejtěžšího" }, " po ", { b: "nejlehčího" }, "."]);
+  questionA.classList.add("text-a");
+  left.appendChild(questionA);
+
+  const questionB = question("B", "Zdravý tučňák nejmenší váží více než 1 100 g. Kolik z těchto tučňáků je zdravých?");
+  questionB.classList.add("text-b");
+  left.appendChild(questionB);
 
   const inner = el("div", "m71a04-inner");
   const header = el("div", "sort-header");
@@ -713,7 +721,7 @@ function renderM71A04(left, wrap) {
     { id: "__5", label: "1 132 g" },
   ], ["MQ71A03AA", "MQ71A03AB", "MQ71A03AC", "MQ71A03AD", "MQ71A03AE"]));
 
-  inner.appendChild(para("Zdravý tučňák nejmenší váží více než 1 100 g."));
+  inner.appendChild(el("p", "healthy-note", "Zdravý tučňák nejmenší váží více než 1 100 g."));
   const numRow = el("p", "numpad-row");
   numRow.appendChild(document.createTextNode("Počet zdravých tučňáků: "));
   numRow.appendChild(createNumberField("MQ71A03B_T", ""));
