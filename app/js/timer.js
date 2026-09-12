@@ -56,10 +56,14 @@ function showFiveMinutePopup() {
   });
 }
 
+// Po vyprseni casu se test uzavre - zak je preveden rovnou na zaverecnou obrazovku.
 function showTimeUpPopup() {
   logTrackEvent("POPUP_TIME_UP_OPEN");
   showModal("Čas vypršel!", "Další", function () {
     logTrackEvent("POPUP_TIME_UP_CLOSE", { event_attribute: "time_up_forced_next" });
-    goToScreenByCode("PT2_END_G4");
+    stopTimer();
+    const lastIndex = SCREEN_ORDER.findIndex(function (s) { return s.code === "Logoff"; });
+    AppState.maxReachedIndex = Math.max(AppState.maxReachedIndex, lastIndex);
+    goToIndex(lastIndex, "NAV_PROG");
   });
 }

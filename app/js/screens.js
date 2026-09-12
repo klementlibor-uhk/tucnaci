@@ -52,7 +52,10 @@ function renderScreen() {
 
   // Konec pokynu ma v originale ramec testu, konec testu a obrazovky s heslem ne.
   const framed = def.kind === "directions" || def.kind === "task_screen" || def.code === "DIR_END_G4";
-  document.getElementById("test-frame").classList.toggle("plain", !framed);
+  const frame = document.getElementById("test-frame");
+  frame.classList.toggle("plain", !framed);
+  // Na konci ulohy zustava paticka se sipkami, aby se zak mohl vratit a zkontrolovat odpovedi
+  frame.classList.toggle("with-footer", def.code === "PT2_END_G4");
 
   logTrackEvent("SCREEN_LOADED", {
     loadedScreenSequence: AppState.screenIndex,

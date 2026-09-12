@@ -289,6 +289,8 @@ body {
 #test-frame.plain #scroll-bar,
 #test-frame.plain #item-id,
 #test-frame.plain #item-number-holder { display: none; }
+/* Konec ulohy: bez leve listy, ale se sipkami v paticce */
+#test-frame.plain.with-footer #app-footer { display: flex; margin-left: 0; width: 100%; }
 #test-frame.plain #center-block { border-left-width: 5px; }
 #test-frame.plain #main-content { margin: 0; }
 #test-frame.plain #screen-container { padding: 30px 40px; }
