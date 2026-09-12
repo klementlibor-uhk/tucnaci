@@ -287,22 +287,78 @@ p { margin: 0 0 12px; }
   cursor: pointer;
 }
 
-/* Obrazovky s heslem od zadavatele */
-.password-box { max-width: 620px; margin: 10px auto; }
-.password-logo { text-align: center; margin-bottom: 18px; }
-.password-logo img { width: 150px; }
-.password-header { background: #2a7ab6; color: #fff; text-align: center; font-weight: 700; padding: 6px; letter-spacing: 1px; }
-.password-panel { border: 2px solid #2a7ab6; padding: 18px 24px; margin-bottom: 22px; }
-.password-heading { font-size: 30px; text-align: center; margin-bottom: 14px; }
-.password-panel p { text-align: center; color: #d2691e; margin: 0 0 4px; }
-.password-input-row { display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; }
-.password-input { font-size: 16px; padding: 5px 10px; border: 1px solid #7f7f7f; width: 120px; font-family: "Open Sans", sans-serif; }
-.password-actions { text-align: center; margin-top: 18px; }
+/* Obrazovky s heslem od zadavatele - design podle originalu (login.scss) */
+.password-box { width: 700px; margin: 0 auto; text-align: center; }
+.password-logo { padding-top: 14px; }
+.password-logo img { width: 120px; }
+.intro-text {
+  border: 3px solid #2a7ab6;
+  border-radius: 6px;
+  width: 606px;
+  margin: 34px auto 26px;
+  text-align: left;
+  line-height: 1.5;
+  overflow: hidden;
+}
+.intro-header {
+  background-color: #2a7ab6;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  font-size: 21px;
+  padding: 4px;
+  letter-spacing: 1px;
+}
+.intro-content { display: flex; align-items: flex-start; padding: 10px; }
+.intro-img {
+  width: 205px; height: 205px; flex: none;
+  background: url("../../data/media/images/ui/digicon.png") no-repeat;
+  background-size: contain;
+}
+.intro-text-content { width: 290px; text-align: center; padding: 10px; margin: auto; }
+.intro-text-content .header2 { font-size: 28px; margin-bottom: 10px; color: #000; }
+.intro-text-content p { color: #C55A11; margin-bottom: 10px; }
+.intro-text-content strong, .info-box strong { color: #000; }
+
+.password-content { width: 250px; margin: 10px auto; text-align: center; }
+.password-label { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+.password-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.lock-icon { color: #828080; font-size: 18px; }
+.password-input {
+  width: 80%; height: 39px;
+  border: 1px solid #828080;
+  border-radius: 5px;
+  box-shadow: inset 1px 1px 7px #484747;
+  font-size: 16px;
+  padding: 0 8px;
+  font-family: "Open Sans", sans-serif;
+}
+.orange-btn {
+  width: 202px;
+  margin-top: 15px;
+  padding: 8px 0;
+  background: linear-gradient(180deg, #FBD08A 0%, #F5A623 45%, #EE8C10 100%);
+  border: 1px solid #D2791A;
+  border-radius: 6px;
+  color: #000;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+}
 
 /* Info obrazovky (konec pokynu, konec testu) */
-.info-box { max-width: 620px; margin: 40px auto; border: 2px solid #2a7ab6; padding: 20px 26px; }
-.info-box p { color: #d2691e; }
-.info-actions { text-align: center; margin-top: 20px; }
+.info-box {
+  border: 3px solid #2a7ab6;
+  border-radius: 6px;
+  width: 540px;
+  margin: 130px auto 0;
+  padding: 16px 24px;
+  text-align: center;
+  color: #C55A11;
+}
+.info-box p { margin: 0 0 4px; }
+.info-actions { text-align: center; margin-top: 45px; }
 .logoff-box { max-width: 620px; margin: 60px auto; text-align: center; }
 
 /* ---------- Pokyny (rozvrzeni podle DIRECTIONS_TIMSS_2023.docx) ---------- */

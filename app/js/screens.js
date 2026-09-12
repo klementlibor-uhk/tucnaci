@@ -33,7 +33,8 @@ function renderScreen() {
   const container = document.getElementById("screen-container");
   container.innerHTML = "";
 
-  const framed = def.kind === "directions" || def.kind === "task_screen";
+  // Konec pokynu ma v originale ramec testu, konec testu a obrazovky s heslem ne.
+  const framed = def.kind === "directions" || def.kind === "task_screen" || def.code === "DIR_END_G4";
   document.getElementById("test-frame").classList.toggle("plain", !framed);
 
   logTrackEvent("SCREEN_LOADED", {
@@ -57,10 +58,11 @@ function renderScreen() {
 
 // ---------- Ramec: cislo ulohy, kod obrazovky, navigacni policka, pocitadlo ----------
 
-// Policka v levé liste a pocitadlo v paticce jsou podle originalu jen behem ulohy,
-// ne behem Pokynu (viz DIRECTIONS_TIMSS_2023.docx).
+// Policka postupu v leve liste: behem Pokynu i behem ulohy (pocitadlo v paticce jen u ulohy).
 function sectionFor(code) {
-  return TASK_CODES.indexOf(code) >= 0 ? TASK_CODES : null;
+  if (TASK_CODES.indexOf(code) >= 0) return TASK_CODES;
+  if (DIR_CODES.indexOf(code) >= 0) return DIR_CODES;
+  return null;
 }
 
 // Zak se muze vratit na jakoukoli jiz zhlednutou obrazovku, ale vpred jen o jednu novou.
@@ -90,18 +92,18 @@ function updateFrame(def) {
   itemId.textContent = def.code === "LOGIN" ? "" : def.code;
 
   if (!section) {
-    // Pokyny: zelene kolecko bez cisla, zadna policka ani pocitadlo (jako v originale).
-    const isDirections = def.kind === "directions";
-    numberHolder.style.display = isDirections ? "flex" : "none";
+    numberHolder.style.display = def.code === "DIR_END_G4" ? "flex" : "none";
     document.getElementById("item-number").textContent = "";
     footerText.textContent = "";
     return;
   }
 
+  // Behem Pokynu ma kolecko zustat prazdne a paticka bez pocitadla (jako v originale).
+  const isTask = section === TASK_CODES;
   const position = section.indexOf(def.code);
-  document.getElementById("item-number").textContent = String(position + 1);
+  document.getElementById("item-number").textContent = isTask ? String(position + 1) : "";
   numberHolder.style.display = "flex";
-  footerText.textContent = (position + 1) + "/" + section.length;
+  footerText.textContent = isTask ? (position + 1) + "/" + section.length : "";
 
   section.forEach(function (code, idx) {
     const chip = el("div", "chip", String(idx + 1));
@@ -200,42 +202,47 @@ function renderLogin(container) {
 
 function renderPasswordGate(container, def) {
   const box = el("div", "password-box");
+
   const logo = el("div", "password-logo");
   const logoImg = document.createElement("img");
   logoImg.src = imgPath("media/images/ui/timss-logo-new.png");
   logo.appendChild(logoImg);
   box.appendChild(logo);
 
-  const panel = el("div", "password-panel");
+  const intro = el("div", "intro-text");
+  const content = el("div", "intro-content");
+  content.appendChild(el("div", "intro-img"));
+  const textContent = el("div", "intro-text-content");
+
   if (def.code === "DIR_START_G4") {
-    box.appendChild(el("div", "password-header", "POKYNY"));
-    panel.appendChild(el("div", "password-heading", "Ahoj"));
-    panel.appendChild(para("Počkej prosím, až ti dá zadavatel testu heslo."));
+    intro.appendChild(el("div", "intro-header", "POKYNY"));
+    textContent.appendChild(el("div", "header2", "Ahoj"));
+    textContent.appendChild(para("Prosím počkej, až ti zadavatel testu dá heslo."));
   } else {
     // Uprava dle spec kap.6.1: bez "Casti 2", cas 18 minut misto 36.
-    box.appendChild(el("div", "password-header", "ZAČÁTEK TESTU"));
-    panel.appendChild(para("Na vypracování testu Tučňáci nejmenší budeš mít 18 minut."));
-    panel.appendChild(para("Každou otázku si pečlivě přečti a odpověz na ni, jak nejlépe umíš. Pokud si svou odpovědí nejsi jistý/jistá, napiš nebo vyber takovou odpověď, o které si myslíš, že je nejlepší, a přejdi k další otázce."));
-    panel.appendChild(para("Prosím počkej, až ti dá zadavatel testu heslo."));
+    intro.appendChild(el("div", "intro-header", "ZAČÁTEK TESTU"));
+    textContent.appendChild(para("Na vypracování úlohy Tučňáci nejmenší budeš mít 18 minut."));
+    textContent.appendChild(para("Prosím počkej, až ti zadavatel testu dá heslo."));
   }
-  box.appendChild(panel);
 
-  const row = el("div", "password-input-row");
-  row.appendChild(el("span", null, "Heslo:"));
+  content.appendChild(textContent);
+  intro.appendChild(content);
+  box.appendChild(intro);
+
+  const pwContent = el("div", "password-content");
+  pwContent.appendChild(el("div", "password-label", "Heslo:"));
+  const row = el("div", "password-row");
+  row.appendChild(el("span", "lock-icon", "\u{1F512}"));
   const input = document.createElement("input");
   input.type = "text";
   input.maxLength = 4;
   input.className = "password-input";
   row.appendChild(input);
-  box.appendChild(row);
-
-  const err = el("div", "login-error");
-  err.style.textAlign = "center";
-  err.style.color = "#c0392b";
-  box.appendChild(err);
+  pwContent.appendChild(row);
+  box.appendChild(pwContent);
 
   const actions = el("div", "password-actions");
-  const startBtn = el("button", "primary-btn", "Začít →");
+  const startBtn = el("button", "orange-btn", "Začít →");
   let incorrectAttempts = 0;
   startBtn.addEventListener("click", function () {
     if (input.value === GATE_PASSWORD) {
@@ -459,25 +466,37 @@ function renderDirections(container, data) {
 
 // ---------- 4) Info obrazovky ----------
 
+// Odstavec s tucne zvyraznenou casti (v originale je zvyraznene slovo cerne, zbytek oranzovy)
+function textWithBold(before, boldText, after) {
+  const p = el("p");
+  if (before) p.appendChild(document.createTextNode(before));
+  p.appendChild(el("strong", null, boldText));
+  if (after) p.appendChild(document.createTextNode(after));
+  return p;
+}
+
 function renderInfo(container, data, def) {
+  const wrap = el("div", "info-wrap");
   const box = el("div", "info-box");
   if (data.screen_code === "DIR_END_G4") {
-    box.appendChild(para("Dokončil/a jsi Pokyny."));
-    box.appendChild(para("Pro pokračování klikni na tlačítko Další."));
+    box.appendChild(textWithBold("Dokončil/a jsi ", "Pokyny.", ""));
+    box.appendChild(textWithBold("Pro pokračování klikni na tlačítko ", "Další", "."));
   } else {
     // Uprava dle spec kap.6.1: bez "Casti 2" - projekt ma jen jednu ulohu.
-    box.appendChild(para("Jsi na konci úlohy Tučňáci nejmenší."));
+    box.appendChild(textWithBold("Jsi na konci úlohy ", "Tučňáci nejmenší", "."));
     box.appendChild(para("Můžeš se vrátit k libovolné otázce, na kterou jsi neodpověděl/a."));
     box.appendChild(para("Také si můžeš své odpovědi na otázky překontrolovat."));
-    box.appendChild(para("Pokud chceš skončit, klikni na tlačítko Další."));
+    box.appendChild(textWithBold("Pokud chceš skončit, klikni na tlačítko ", "Další", "."));
     if (def.stopsTimer) stopTimer();
   }
+  wrap.appendChild(box);
+
   const actions = el("div", "info-actions");
-  const nextBtn = el("button", "primary-btn", "Další →");
+  const nextBtn = el("button", "orange-btn", "Další →");
   nextBtn.addEventListener("click", goNext);
   actions.appendChild(nextBtn);
-  box.appendChild(actions);
-  container.appendChild(box);
+  wrap.appendChild(actions);
+  container.appendChild(wrap);
 }
 
 // ---------- 5) Zaverecna obrazovka (vlastni navrh, viz 19_logoff.json) ----------
