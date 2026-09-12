@@ -785,6 +785,7 @@ function renderM71A05(left, wrap) {
 }
 
 function renderM71A06(left, wrap) {
+  left.classList.add("m71a06-left");   // sirka 370 px podle originalu
   left.appendChild(el("div", "psi-title", "Potrava"));
   left.appendChild(para("Zdravý tučňák sežere za rok:"));
   const list = el("ul", "psi-list");
@@ -800,7 +801,17 @@ function renderM71A06(left, wrap) {
     { id: "MQ71A05A__4", label: "4 350 + (60 · 45)" },
   ]));
   left.appendChild(question("B", "Doplň obrázky do tabulky tak, aby ukazovala množství ryb, které jeden zdravý tučňák sežere za jeden rok."));
-  left.appendChild(para("Přetáhni symboly do tabulky a vytvoř tak obrázkový graf."));
+
+  // Pokyn s ikonou symbolu ryb (jako v originale)
+  const symbolLine = el("p", "symbol-line");
+  symbolLine.appendChild(document.createTextNode("Přetáhni symboly "));
+  const symbolIcon = document.createElement("img");
+  symbolIcon.src = imgPath("media/images/littlepenguins/Screen6_Icon_in_sentence.png");
+  symbolIcon.className = "symbol-icon";
+  symbolIcon.alt = "symboly ryb";
+  symbolLine.appendChild(symbolIcon);
+  symbolLine.appendChild(document.createTextNode(" do tabulky a vytvoř tak obrázkový graf."));
+  left.appendChild(symbolLine);
 
   const inner = el("div", "m71a06-inner");
   inner.appendChild(el("div", "psi-title", "Potrava, kterou sežere zdravý tučňák nejmenší"));
@@ -815,11 +826,14 @@ function renderM71A06(left, wrap) {
   table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
-  [["Kostnaté ryby (60 kg)", "kostnate"], ["Ostatní ryby (45 kg)", "ostatni"]].forEach(function (row) {
+  [["Kostnaté ryby", "(60 kg)", "kostnate"], ["Ostatní ryby", "(45 kg)", "ostatni"]].forEach(function (row) {
     const tr = document.createElement("tr");
-    tr.appendChild(el("td", null, row[0]));
-    const td = el("td", "drop-zone-cell");
-    td.appendChild(createDropZone("MQ71A05B_T", row[1], dropState));
+    const nameCell = document.createElement("td");
+    nameCell.appendChild(el("div", null, row[0]));
+    nameCell.appendChild(el("div", null, row[1]));
+    tr.appendChild(nameCell);
+    const td = el("td", "drop-cell");
+    td.appendChild(createDropZone("MQ71A05B_T", row[2], dropState));
     tr.appendChild(td);
     tbody.appendChild(tr);
   });
@@ -828,15 +842,18 @@ function renderM71A06(left, wrap) {
   const tableRow = el("div", "table-with-tray");
   tableRow.appendChild(table);
 
+  // Zdroj pretahovani je legenda vpravo od tabulky - preruseny ramecek se symbolem
+  // a popiskem hodnoty, stejne jako v originale.
   const trayCol = el("div", "tray-col");
-  trayCol.appendChild(createDragTray([
-    { id: "whole", label: "celá ryba", imgSrc: imgPath("media/images/littlepenguins/Screen6_WholeFish.png") },
-    { id: "half", label: "půlka ryby", imgSrc: imgPath("media/images/littlepenguins/Screen6_HalfFish.png") },
-  ]));
-  const legend = el("div", "fish-legend");
-  legend.appendChild(el("p", null, "= 10 kg ryb"));
-  legend.appendChild(el("p", null, "= 5 kg ryb"));
-  trayCol.appendChild(legend);
+  [
+    { id: "whole", img: "Screen6_WholeFish.png", label: "= 10 kg ryb" },
+    { id: "half", img: "Screen6_HalfFish.png", label: "= 5 kg ryb" },
+  ].forEach(function (item) {
+    const row = el("div", "legend-item");
+    row.appendChild(createDragSource(item.id, imgPath("media/images/littlepenguins/" + item.img)));
+    row.appendChild(el("span", "legend-label", item.label));
+    trayCol.appendChild(row);
+  });
   tableRow.appendChild(trayCol);
 
   inner.appendChild(tableRow);

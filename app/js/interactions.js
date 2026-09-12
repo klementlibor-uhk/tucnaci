@@ -473,22 +473,18 @@ function createAxisSlider(fieldId, position, labelLines) {
 
 // ---------- 5) Drag&drop obrazku do tabulky - jQuery UI draggable/droppable (M71A06 B) ----------
 
-function createDragTray(dragItems) {
-  const tray = el("div", "dragdrop-tray");
-  dragItems.forEach(function (item) {
-    const slot = el("div", "drag-slot");
-    const img = document.createElement("img");
-    img.src = item.imgSrc;
-    img.alt = item.label;
-    img.className = "dragdrop-item";
-    img.dataset.itemId = item.id;
-    slot.appendChild(img);
-    tray.appendChild(slot);
-    pendingInits.push(function () {
-      $(img).draggable({ helper: "clone", revert: "invalid", appendTo: "body", zIndex: 900 });
-    });
+// Zdroj pretahovani: symbol v preruseném ramecku (v originale soucast legendy vpravo)
+function createDragSource(itemId, imgSrc) {
+  const slot = el("div", "drag-slot");
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  img.className = "dragdrop-item";
+  img.dataset.itemId = itemId;
+  slot.appendChild(img);
+  pendingInits.push(function () {
+    $(img).draggable({ helper: "clone", revert: "invalid", appendTo: "body", zIndex: 900 });
   });
-  return tray;
+  return slot;
 }
 
 function createDropZone(fieldId, zoneId, dropState) {
@@ -503,10 +499,12 @@ function createDropZone(fieldId, zoneId, dropState) {
         const itemId = ui.draggable[0].dataset.itemId;
         if (dropState[zoneId].length >= 12) return;
         dropState[zoneId].push(itemId);
+        // Symbol se usadi do mrizky policek (40x65 px jako v originale)
+        const cell = el("div", "drop-cell-item");
         const copy = document.createElement("img");
         copy.src = ui.draggable[0].src;
-        copy.className = "dragdrop-item dropped";
-        zone.appendChild(copy);
+        cell.appendChild(copy);
+        zone.appendChild(cell);
         const response = Object.keys(dropState).map(function (z) {
           return z + "(" + dropState[z].join(";") + ")";
         }).join(",");

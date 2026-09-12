@@ -709,15 +709,40 @@ p { margin: 0 0 12px; }
 .shark-img { max-width: 300px; }
 .healthy-caption { text-align: center; font-size: 14px; font-weight: 700; }
 
-/* Drag&drop do tabulky (M71A06) */
-.dragdrop-tray { display: flex; flex-direction: column; gap: 20px; }
-.dragdrop-item { width: 25px; height: 45px; cursor: pointer; }
-.drag-slot { border: 2px dashed #472f92; width: 40px; height: 60px; padding-top: 5px; }
-.psi-table { width: 349px; height: 375px; border-collapse: collapse; background: url("../../data/media/images/littlepenguins/Screen6_Table.png") no-repeat; background-size: 100% 100%; }
-.psi-table th, .psi-table td { padding: 7px 10px; text-align: left; vertical-align: top; }
+/* Drag&drop do tabulky (M71A06). Rozmery bunek odpovidaji carám v obrazku tabulky
+   (zmereno: zahlavi 14,6 %, radky 42 % a 41,5 % vysky; prvni sloupec 27 % sirky). */
+.dragdrop-item { width: 25px; cursor: pointer; }
+.drag-slot {
+  border: 2px dashed #472f92;
+  width: 40px; height: 60px;
+  display: flex; align-items: center; justify-content: center;
+  flex: none;
+}
+.psi-table {
+  width: 349px; height: 375px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: url("../../data/media/images/littlepenguins/Screen6_Table.png") no-repeat;
+  background-size: 100% 100%;
+}
+.psi-table th, .psi-table td { padding: 6px 8px; text-align: left; vertical-align: top; font-size: 13px; }
+.psi-table th:first-child, .psi-table td:first-child { width: 94px; }
+.psi-table thead th { height: 55px; text-align: center; font-weight: 700; }
+.psi-table thead th:first-child { text-align: left; }
+.psi-table tbody tr { height: 157px; }
 .psi-table p { margin: 0; }
-.drop-zone-cell { height: 147px; }
-.drop-zone { display: flex; flex-wrap: wrap; gap: 4px; min-height: 140px; align-content: flex-start; }
+.drop-cell { padding: 4px 2px; vertical-align: top; }
+.drop-zone { display: grid; grid-template-columns: repeat(6, 40px); grid-auto-rows: 65px; }
+.drop-cell-item {
+  border: 2px dashed #472f92;
+  display: flex; align-items: center; justify-content: center;
+}
+.drop-cell-item img { width: 25px; }
+.tray-col { display: flex; flex-direction: column; gap: 34px; padding-top: 62px; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-label { font-size: 13px; white-space: nowrap; }
+.symbol-icon { width: 35px; vertical-align: middle; margin: 0 2px; }
+.m71a06-left { width: 370px; }
 
 /* Detaily jednotlivych ukolovych obrazovek */
 .question-line { display: flex; align-items: baseline; }
@@ -759,7 +784,7 @@ p { margin: 0 0 12px; }
 
 .range-title { font-weight: 700; margin-bottom: 10px; }
 .m71a05-left { width: 367px; }
-.m71a05-left .drag-line { margin: 6px 0 0 29px; }
+.m71a05-left .drag-line { margin: 6px 0 20px 29px; }
 .drag-icon { width: 22px; vertical-align: middle; margin: 0 2px; }
 
 /* Rybi cislena osa: hotovy obrazek z originalu, hodnoty 4 000 a 5 000 lezi na 9,25 %
@@ -774,7 +799,8 @@ p { margin: 0 0 12px; }
 .axis-slider {
   position: absolute;
   left: 5.25%; width: 88%;
-  top: 50%; height: 0;
+  /* osa lezi na 43,5 % vysky obrazku (zmereno), ne uprostred */
+  top: 43.5%; height: 0;
   background: none; border: none;
 }
 .axis-handle {
