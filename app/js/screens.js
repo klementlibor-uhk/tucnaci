@@ -195,12 +195,12 @@ function renderPasswordGate(container, def) {
 
   const panel = el("div", "password-panel");
   if (def.code === "DIR_START_G4") {
-    box.insertBefore(el("div", "password-header", "POKYNY"), panel);
+    box.appendChild(el("div", "password-header", "POKYNY"));
     panel.appendChild(el("div", "password-heading", "Ahoj"));
     panel.appendChild(para("Počkej prosím, až ti dá zadavatel testu heslo."));
   } else {
     // Uprava dle spec kap.6.1: bez "Casti 2", cas 18 minut misto 36.
-    box.insertBefore(el("div", "password-header", "ZAČÁTEK TESTU"), panel);
+    box.appendChild(el("div", "password-header", "ZAČÁTEK TESTU"));
     panel.appendChild(para("Na vypracování testu Tučňáci nejmenší budeš mít 18 minut."));
     panel.appendChild(para("Každou otázku si pečlivě přečti a odpověz na ni, jak nejlépe umíš. Pokud si svou odpovědí nejsi jistý/jistá, napiš nebo vyber takovou odpověď, o které si myslíš, že je nejlepší, a přejdi k další otázce."));
     panel.appendChild(para("Prosím počkej, až ti dá zadavatel testu heslo."));
