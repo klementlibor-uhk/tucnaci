@@ -606,10 +606,13 @@ function renderM71A02(left, wrap) {
     };
   });
 
+  // Sirka nahledu na webove strance podle originalu (_littlePenguins.scss)
+  const previewWidths = { MQ71A01__1: 125, MQ71A01__2: 125, MQ71A01__3: 90, MQ71A01__4: 285 };
   const inner = el("div", "M71A02_imgResponse");
   const previews = {};
   options.forEach(function (o) {
     const holder = el("div", "imgResponse");
+    holder.style.width = previewWidths[o.id] + "px";
     const img = document.createElement("img");
     img.src = o.imgSrc;
     holder.appendChild(img);

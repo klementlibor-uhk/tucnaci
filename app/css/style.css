@@ -512,13 +512,25 @@ p { margin: 0 0 12px; }
   border-radius: 5px;
   margin-top: 32px;
 }
-.right-side .url p { margin: 13px 0 0 100px; font-size: 13px; }
-.right-side .tab-main-title p { font-size: 32px; text-align: center; margin-top: 14px; font-weight: 700; }
-.right-side .tabs { display: flex; padding-top: 5px; }
-.right-side .inner-tabs { width: 100%; text-align: center; }
-.right-side .inner-tabs p { color: #fff; font-weight: 700; margin: 0; font-size: 14px; }
+/* Texty jsou ukotvene presne na pasy v obrazku pozadi (zmereno: adresni radek 14-35 px,
+   banner 36-86 px, zalozky 87-109 px po 85 px, obsah od 112 px). */
+.right-side .url { position: absolute; top: 16px; left: 0; right: 0; }
+.right-side .url p { margin: 0 0 0 100px; font-size: 13px; }
+.right-side .tab-main-title { position: absolute; top: 40px; left: 0; right: 0; }
+.right-side .tab-main-title p { margin: 0; font-size: 32px; line-height: 1.2; text-align: center; font-weight: 700; }
+.right-side .tabs { position: absolute; top: 87px; left: 0; right: 0; height: 22px; display: flex; }
+.right-side .inner-tabs {
+  flex: 1 1 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.right-side .inner-tabs p { color: #fff; font-weight: 700; margin: 0; font-size: 13px; }
 .right-side .inner-tabs.active p { color: #fef49b; }
-.right-side .tab-inner-section { padding: 15px 40px; }
+.right-side .tab-inner-section {
+  position: absolute;
+  top: 114px; left: 0; right: 0; bottom: 8px;
+  padding: 10px 20px;
+  overflow: auto;
+}
 
 .m71a01-image { width: 500px; height: 460px; margin-left: 40px; background-size: 100%; background-repeat: no-repeat; }
 .next-button-inline {
