@@ -482,25 +482,61 @@ function createDragSource(itemId, imgSrc) {
   img.dataset.itemId = itemId;
   slot.appendChild(img);
   pendingInits.push(function () {
-    $(img).draggable({ helper: "clone", revert: "invalid", appendTo: "body", zIndex: 900 });
+    $(img).draggable({
+      // Taha se cely preruseny ramecek se symbolem, jako v originale
+      helper: function () {
+        const ghost = el("div", "drag-slot drag-slot-ghost");
+        const copy = document.createElement("img");
+        copy.src = imgSrc;
+        copy.className = "dragdrop-item";
+        ghost.appendChild(copy);
+        return ghost;
+      },
+      revert: "invalid",
+      appendTo: "body",
+      zIndex: 900,
+    });
   });
   return slot;
 }
+
+const DROP_COLS = 6;
+const DROP_ROWS = 2;
 
 function createDropZone(fieldId, zoneId, dropState) {
   const zone = el("div", "drop-zone");
   zone.dataset.zoneId = zoneId;
   dropState[zoneId] = [];
+  const takenSlots = {};
+
+  // Policko pod mistem pusteni; pokud je obsazene, vezme se nejblizsi volne
+  function slotFor(helperEl) {
+    const rect = zone.getBoundingClientRect();
+    const h = helperEl.getBoundingClientRect();
+    const col = Math.min(DROP_COLS - 1, Math.max(0, Math.floor((h.left + h.width / 2 - rect.left) / 40)));
+    const row = Math.min(DROP_ROWS - 1, Math.max(0, Math.floor((h.top + h.height / 2 - rect.top) / 65)));
+    const total = DROP_COLS * DROP_ROWS;
+    for (let i = 0; i < total; i++) {
+      const slot = (row * DROP_COLS + col + i) % total;
+      if (!takenSlots[slot]) return slot;
+    }
+    return null;
+  }
 
   pendingInits.push(function () {
     $(zone).droppable({
       accept: ".dragdrop-item",
+      tolerance: "pointer",
       drop: function (event, ui) {
         const itemId = ui.draggable[0].dataset.itemId;
-        if (dropState[zoneId].length >= 12) return;
+        const slot = slotFor(ui.helper[0]);
+        if (slot === null) return;
+        takenSlots[slot] = true;
         dropState[zoneId].push(itemId);
         // Symbol se usadi do mrizky policek (40x65 px jako v originale)
         const cell = el("div", "drop-cell-item");
+        cell.style.gridColumnStart = (slot % DROP_COLS) + 1;
+        cell.style.gridRowStart = Math.floor(slot / DROP_COLS) + 1;
         const copy = document.createElement("img");
         copy.src = ui.draggable[0].src;
         cell.appendChild(copy);

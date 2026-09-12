@@ -694,18 +694,6 @@ p { margin: 0 0 12px; }
 
 /* Posuvniky na rybi ose (M71A05) */
 .range-slider-wrapper { position: relative; width: 90%; margin-left: 25px; height: 150px; }
-.slider-tag { background: #F58220; color: #fff; padding: 9px 17px; font-size: 14px; text-align: center; }
-.ui-slider { position: relative; height: 40px; width: 85%; margin: 0 auto; background: none; pointer-events: none; }
-.ui-slider .ui-slider-handle {
-  position: absolute;
-  width: 12px; height: 12px;
-  background-color: #f58220;
-  border: none; border-radius: 50%;
-  top: 17px; margin-left: -6px;
-  cursor: pointer;
-  pointer-events: auto;
-  outline: none;
-}
 .shark-img { max-width: 300px; }
 .healthy-caption { text-align: center; font-size: 14px; font-weight: 700; }
 
@@ -732,7 +720,14 @@ p { margin: 0 0 12px; }
 .psi-table tbody tr { height: 157px; }
 .psi-table p { margin: 0; }
 .drop-cell { padding: 4px 2px; vertical-align: top; }
-.drop-zone { display: grid; grid-template-columns: repeat(6, 40px); grid-auto-rows: 65px; }
+/* Mrizka 6x2 policka 40x65 px (jako v originale). Vyska musi byt dana i kdyz je
+   prazdna, jinak by nebylo kam symbol pustit. */
+.drop-zone {
+  display: grid;
+  grid-template-columns: repeat(6, 40px);
+  grid-template-rows: repeat(2, 65px);
+  min-height: 130px;
+}
 .drop-cell-item {
   border: 2px dashed #472f92;
   display: flex; align-items: center; justify-content: center;
