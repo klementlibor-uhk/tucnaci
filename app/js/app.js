@@ -1,18 +1,26 @@
 // Bootstrap aplikace: navigacni tlacitka, sledovani rolovani (SCROLL_* dle kap.7.2),
 // modalni okna a export dat (kap.7.3 - zatim export do souboru ke stazeni).
 
-function showModal(text, buttonLabel, onClose) {
+// autoCloseMs: hlaska se po dane dobe potvrdi sama (pouziva se pri vyprseni casu)
+function showModal(text, buttonLabel, onClose, autoCloseMs) {
   const overlay = el("div", "modal-overlay");
   const box = el("div", "modal-box");
   box.appendChild(el("p", "modal-text", text));
   const btn = el("button", "primary-btn", buttonLabel);
-  btn.addEventListener("click", function () {
+  let autoCloseTimer = null;
+
+  function close() {
+    if (!overlay.parentNode) return;
+    if (autoCloseTimer) clearTimeout(autoCloseTimer);
     document.body.removeChild(overlay);
     if (onClose) onClose();
-  });
+  }
+
+  btn.addEventListener("click", close);
   box.appendChild(btn);
   overlay.appendChild(box);
   document.body.appendChild(overlay);
+  if (autoCloseMs) autoCloseTimer = setTimeout(close, autoCloseMs);
 }
 
 let scrollDebounce = null;

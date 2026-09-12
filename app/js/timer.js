@@ -65,5 +65,5 @@ function showTimeUpPopup() {
     const lastIndex = SCREEN_ORDER.findIndex(function (s) { return s.code === "Logoff"; });
     AppState.maxReachedIndex = Math.max(AppState.maxReachedIndex, lastIndex);
     goToIndex(lastIndex, "NAV_PROG");
-  });
+  }, TIME_UP_AUTOCLOSE_MS);
 }

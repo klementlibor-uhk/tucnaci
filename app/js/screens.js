@@ -264,7 +264,7 @@ function renderPasswordGate(container, def) {
   const startBtn = el("button", "orange-btn", "Začít →");
   let incorrectAttempts = 0;
   startBtn.addEventListener("click", function () {
-    if (input.value === GATE_PASSWORD) {
+    if (input.value === def.password) {
       logTrackEvent(def.passwordEvent, {
         "Booklet Part": def.bookletPart,
         "login success": true,
