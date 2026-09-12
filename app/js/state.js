@@ -5,6 +5,7 @@ const AppState = {
   responses: {},         // odpovedi podle identifikatoru MQ... (kap. 3 specifikace)
   events: [],            // log procesnich udalosti (kap. 7 specifikace)
   visited: {},           // navstivene obrazovky - podle nich se barvi policka v navigacni liste
+  maxReachedIndex: 0,    // nejdal dosazena obrazovka - vpred lze jen o jednu novou
   timerRemainingMs: null,
   timerHandle: null,
   timerStarted: false,

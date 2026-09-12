@@ -14,23 +14,36 @@ function runPendingInits() {
 
 let activeField = null; // { fieldId, mathField }
 
+function typeKey(ch) {
+  return function (mf) { mf.typedText(ch); };
+}
+
 const KEYPAD_LAYOUT = [
-  { label: "7", action: function (mf) { mf.typedText("7"); } },
-  { label: "8", action: function (mf) { mf.typedText("8"); } },
-  { label: "9", action: function (mf) { mf.typedText("9"); } },
-  { label: "-", action: function (mf) { mf.typedText("-"); } },
-  { label: "4", action: function (mf) { mf.typedText("4"); } },
-  { label: "5", action: function (mf) { mf.typedText("5"); } },
-  { label: "6", action: function (mf) { mf.typedText("6"); } },
-  { label: "▭/▭", cls: "keypad-frac", action: function (mf) { mf.cmd("\\frac"); } },
-  { label: "1", action: function (mf) { mf.typedText("1"); } },
-  { label: "2", action: function (mf) { mf.typedText("2"); } },
-  { label: "3", action: function (mf) { mf.typedText("3"); } },
-  { label: "⌫", action: function (mf) { mf.keystroke("Backspace"); } },
-  { label: "0", action: function (mf) { mf.typedText("0"); } },
-  { label: ",", action: function (mf) { mf.typedText(","); } },
+  { label: "7", action: typeKey("7") },
+  { label: "8", action: typeKey("8") },
+  { label: "9", action: typeKey("9") },
+  { label: "-", action: typeKey("-") },
+  { label: "4", action: typeKey("4") },
+  { label: "5", action: typeKey("5") },
+  { label: "6", action: typeKey("6") },
+  { fraction: true, action: function (mf) { mf.cmd("\\frac"); } },
+  { label: "1", action: typeKey("1") },
+  { label: "2", action: typeKey("2") },
+  { label: "3", action: typeKey("3") },
+  { label: "⌫", cls: "keypad-back", action: function (mf) { mf.keystroke("Backspace"); } },
+  { label: "0", action: typeKey("0") },
+  { label: ",", action: typeKey(",") },
   { label: "OK", cls: "keypad-ok", action: null },
 ];
+
+// Ikona zlomku: dva sede obdelnicky oddelene carou (jako v originale)
+function fractionIcon() {
+  const icon = el("span", "keypad-frac-icon");
+  icon.appendChild(el("span", "box"));
+  icon.appendChild(el("span", "bar"));
+  icon.appendChild(el("span", "box"));
+  return icon;
+}
 
 function ensureKeypad() {
   let kb = document.getElementById("math-keypad");
@@ -38,12 +51,16 @@ function ensureKeypad() {
   kb = document.createElement("div");
   kb.id = "math-keypad";
   kb.className = "math-keypad hidden";
-  kb.appendChild(el("div", "keypad-header"));
+
+  const header = el("div", "keypad-header", "✥");
+  kb.appendChild(header);
+
   KEYPAD_LAYOUT.forEach(function (key) {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "keypad-btn" + (key.cls ? " " + key.cls : "");
-    btn.textContent = key.label;
+    if (key.fraction) btn.appendChild(fractionIcon());
+    else btn.textContent = key.label;
     // Nesmi sebrat fokus poli - jinak by se klavesnice hned zavrela.
     btn.addEventListener("mousedown", function (e) { e.preventDefault(); });
     btn.addEventListener("click", function () {
@@ -53,7 +70,23 @@ function ensureKeypad() {
     });
     kb.appendChild(btn);
   });
+
   document.body.appendChild(kb);
+  // Klavesnici lze presouvat za horni listu, stejne jako v originale.
+  $(kb).draggable({ handle: ".keypad-header" });
+  return kb;
+}
+
+// Staticka ukazka klavesnice pro obrazovku Pokynu (needituje, jen ilustrace).
+function buildKeypadIllustration() {
+  const kb = el("div", "math-keypad keypad-illustration");
+  kb.appendChild(el("div", "keypad-header", "✥"));
+  KEYPAD_LAYOUT.forEach(function (key) {
+    const btn = el("div", "keypad-btn" + (key.cls ? " " + key.cls : ""));
+    if (key.fraction) btn.appendChild(fractionIcon());
+    else btn.textContent = key.label;
+    kb.appendChild(btn);
+  });
   return kb;
 }
 
@@ -158,9 +191,9 @@ function createHottext(fieldId, options, onChange) {
 function createSingleChoice(fieldId, choices) {
   const wrap = el("div", "choice-group");
   let selected = null;
-  choices.forEach(function (choice) {
+  choices.forEach(function (choice, index) {
     const row = el("div", "choice-row");
-    row.appendChild(el("span", "choice-radio"));
+    row.appendChild(el("span", "choice-radio", String.fromCharCode(65 + index)));
     row.appendChild(el("span", null, choice.label));
     row.addEventListener("click", function () {
       const trackId = fieldId + "_" + choice.id;
@@ -180,6 +213,99 @@ function createSingleChoice(fieldId, choices) {
     wrap.appendChild(row);
   });
   return wrap;
+}
+
+// ---------- 2b) Vyber vice odpovedi klikanim do obrazku (Pokyny) ----------
+// Souradnice oblasti odpovidaji mape v originalnim HTML (obrazek 480x67).
+
+function createHotspotMultiSelect(fieldId, imgSrc, areas) {
+  const wrap = el("div", "hotspot-wrap");
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  wrap.appendChild(img);
+
+  const selected = [];
+  areas.forEach(function (area) {
+    const hit = el("div", "hotspot-area");
+    hit.style.left = area.coords[0] + "px";
+    hit.style.top = area.coords[1] + "px";
+    hit.style.width = (area.coords[2] - area.coords[0]) + "px";
+    hit.style.height = (area.coords[3] - area.coords[1]) + "px";
+    hit.addEventListener("click", function () {
+      const trackId = fieldId + "_" + area.id;
+      const pos = selected.indexOf(area.id);
+      if (pos >= 0) {
+        selected.splice(pos, 1);
+        hit.classList.remove("selected");
+        AppState.responses[fieldId] = selected.toString();
+        logComponentEvent(trackId, { cleared: true, response: selected.toString() });
+      } else {
+        selected.push(area.id);
+        hit.classList.add("selected");
+        AppState.responses[fieldId] = selected.toString();
+        logComponentEvent(trackId, { response: selected.toString() });
+      }
+    });
+    wrap.appendChild(hit);
+  });
+  return wrap;
+}
+
+// ---------- 2c) Pretazeni cisel do ramecku (Pokyny) ----------
+
+function createDragToBoxes(fieldId, items, targets) {
+  const grid = el("div", "drag-practice-grid");
+  const sourceRow = el("div", "drag-row");
+  const targetRow = el("div", "drag-row");
+  const placed = {};
+
+  items.forEach(function (item) {
+    const src = el("div", "drag-source", item.label);
+    src.dataset.itemId = item.id;
+    sourceRow.appendChild(src);
+    pendingInits.push(function () {
+      $(src).draggable({
+        helper: "clone",
+        revert: "invalid",
+        appendTo: "body",
+        zIndex: 900,
+        start: function (event, ui) { return !src.classList.contains("used"); },
+      });
+    });
+  });
+
+  targets.forEach(function (target) {
+    const zone = el("div", "drag-target");
+    zone.dataset.zoneId = target.id;
+    targetRow.appendChild(zone);
+    pendingInits.push(function () {
+      $(zone).droppable({
+        accept: ".drag-source",
+        drop: function (event, ui) {
+          const src = ui.draggable[0];
+          if (src.classList.contains("used") || zone.classList.contains("filled")) return;
+          zone.textContent = src.textContent;
+          zone.classList.add("filled");
+          src.classList.add("used");
+          placed[target.id] = src.dataset.itemId;
+          const response = Object.keys(placed).sort().map(function (z) {
+            return z + ":" + placed[z];
+          }).join(",");
+          AppState.responses[fieldId] = response;
+          logComponentEvent(fieldId, {
+            dragged: src.dataset.itemId,
+            dropped: target.id,
+            endTime: nowMs(),
+            response: response,
+          });
+        },
+      });
+    });
+  });
+
+  grid.appendChild(sourceRow);
+  grid.appendChild(targetRow);
+  return grid;
 }
 
 // ---------- 3) Razeni pretahovanim - jQuery UI sortable (M71A04) ----------

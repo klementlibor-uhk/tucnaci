@@ -125,6 +125,7 @@ body {
 .chip.answered { background-color: #0471b2; color: #fff; }
 .chip.unanswered { background-color: #babcbd; }
 .chip.current { background-color: #80c043; }
+.chip.locked { cursor: default; }
 
 #body-wrapper {
   height: 688px;
@@ -304,18 +305,81 @@ p { margin: 0 0 12px; }
 .info-actions { text-align: center; margin-top: 20px; }
 .logoff-box { max-width: 620px; margin: 60px auto; text-align: center; }
 
-/* Pokyny */
-.directions-box { max-width: 900px; }
+/* ---------- Pokyny (rozvrzeni podle DIRECTIONS_TIMSS_2023.docx) ---------- */
+.directions-box { max-width: 1000px; color: #1F3864; }
+.directions-box h2 { color: #000; font-size: 19px; margin: 0 0 6px; }
+.dir-intro { color: #1F3864; margin-bottom: 16px; }
+.dir-section-title {
+  color: #2E74B5;
+  font-weight: 700;
+  font-size: 16px;
+  border-bottom: 2px solid #2E74B5;
+  padding-bottom: 4px;
+  max-width: 440px;
+  margin: 22px 0 14px;
+}
+.hint-row { display: flex; align-items: center; gap: 10px; margin: 16px 0; }
+.hint-row + .hint-row { margin-top: 46px; }
+.hint-row.right { justify-content: flex-end; }
+.hint-row.center { justify-content: center; }
+.mascot { flex: none; }
+.mascot img { display: block; height: 110px; }
 .hint-box {
-  border: 5px solid #FEB90C;
+  border: 3px solid #F0A400;
   border-radius: 10px;
-  padding: 10px 20px;
-  margin: 12px 0;
+  padding: 10px 18px;
   background: #fff;
+  max-width: 520px;
 }
 .hint-box.cream { background: #FFF2CC; }
-.table-label { color: #3366ff; font-weight: 700; }
-.practice-hotspot-img { max-width: 100%; }
+.hint-box p { margin: 0 0 8px; }
+.hint-box p:last-child { margin-bottom: 0; }
+.hint-title { font-weight: 700; color: #000; margin-bottom: 4px; }
+.inline-arrow { height: 26px; vertical-align: middle; margin: 0 4px; }
+
+.bold-line { font-weight: 700; }
+.practice-row { display: flex; gap: 30px; align-items: flex-start; margin-bottom: 10px; }
+.practice-left { flex: 1 1 auto; min-width: 340px; }
+.practice-row .hint-row { flex: none; margin: 0; max-width: 440px; }
+.clock-sample { margin: 6px auto 0; }
+.swatch-line { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.chip-swatch {
+  flex: none;
+  width: 34px; height: 22px;
+  border-radius: 8px/6px;
+  border: 1px solid #6d6d6d;
+  background: #EEEEEE;
+}
+.chip-swatch.current { background: #80c043; }
+.chip-swatch.answered { background: #0471b2; }
+.chip-swatch.unanswered { background: #babcbd; }
+.answer-row { display: flex; align-items: center; gap: 8px; }
+.keypad-illustration { position: static; display: inline-grid; box-shadow: none; }
+
+/* Cviceni: klikani na obrazky (vyber vice odpovedi) */
+.hotspot-wrap { position: relative; display: inline-block; margin: 6px 0 10px; }
+.hotspot-wrap img { display: block; }
+.hotspot-area { position: absolute; cursor: pointer; border-radius: 3px; }
+.hotspot-area.selected { background: rgba(46, 116, 181, 0.35); outline: 3px solid #2E74B5; }
+
+/* Cviceni: pretahovani cisel do ramecku */
+.drag-practice-grid { display: flex; flex-direction: column; gap: 30px; }
+.drag-row { display: flex; gap: 22px; }
+.drag-source {
+  width: 70px; height: 70px;
+  border: 2px solid #000; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; font-weight: 700;
+  cursor: pointer;
+}
+.drag-source.used { color: #b9b9b9; border-color: #c9c9c9; cursor: default; }
+.drag-target {
+  width: 70px; height: 70px;
+  border: 2px dashed #000; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; font-weight: 700;
+}
+.drag-target.filled { border: 2px solid #2E74B5; }
 
 /* ---------- Ukolove obrazovky ---------- */
 .task-screen { display: flex; }
@@ -362,41 +426,77 @@ p { margin: 0 0 12px; }
 .imgResponse.active { display: block; }
 .imgResponse img { width: 100%; }
 
-/* Vyber jedne moznosti */
-.choice-group { margin: 10px 0; }
-.choice-row { display: flex; align-items: center; gap: 10px; padding: 3px 0; cursor: pointer; }
-.choice-radio { width: 39px; height: 39px; border: 2px solid #000; background: #fff; flex: none; }
-.choice-row.selected .choice-radio { background: #73a335; }
+/* Vyber jedne moznosti - kolecko s pismenem, vybrana odpoved se podbarvi modre */
+.choice-group { margin: 10px 0 20px; }
+.choice-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 5px 10px; margin-bottom: 2px;
+  cursor: pointer; border-radius: 4px;
+  max-width: 430px;
+}
+.choice-row.selected { background: #bddce1; }
+.choice-radio {
+  width: 34px; height: 34px; flex: none;
+  border: 2px solid #000; border-radius: 50%;
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Paytone One", sans-serif;
+  font-size: 16px;
+}
+.choice-row.selected .choice-radio { background: #73a335; border-color: #4d7a1f; color: #fff; }
 
-/* Cislene pole (MathQuill) */
-.number-field-wrap { display: inline-flex; align-items: center; gap: 5px; }
-.number-field { background: #fff; }
-.number-field .mq-editable-field { border: 3px solid #009144; width: 145px; height: 35px; border-radius: 3px; background: #fff; }
+/* Cislene pole (MathQuill) - rozmery podle originalu (145x35, zeleny ramecek) */
+.number-field-wrap { display: inline-flex; align-items: center; gap: 6px; }
+.number-field {
+  border: 3px solid #009144;
+  border-radius: 3px;
+  background: #fff;
+  min-width: 145px;
+  height: 35px;
+  padding: 2px 8px;
+  font-size: 18px;
+  vertical-align: middle;
+}
 
-/* Virtualni klavesnice math_min */
+/* Virtualni klavesnice math_min - vzhled podle DIRECTIONS_TIMSS_2023.docx */
 .math-keypad {
   position: absolute; z-index: 500;
-  background: #2b6ca3;
-  border-radius: 6px;
-  padding: 8px;
+  background: #b7d5e4;
+  border-radius: 10px;
+  padding: 0 8px 8px;
   display: grid;
   grid-template-columns: repeat(4, 52px);
-  gap: 5px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.35);
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
 }
 .math-keypad.hidden { display: none; }
-.math-keypad .keypad-header { grid-column: span 4; height: 18px; cursor: move; }
+.math-keypad .keypad-header {
+  grid-column: span 4;
+  height: 30px;
+  margin: 0 -8px 2px;
+  background: #17698c;
+  border-radius: 10px 10px 0 0;
+  cursor: move;
+  display: flex; align-items: center;
+  padding-left: 10px;
+  color: #fff; font-size: 15px;
+}
 .keypad-btn {
   height: 44px;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px; font-weight: 700;
   font-family: "Open Sans", sans-serif;
-  border: 1px solid #b9c8d4;
-  border-radius: 4px;
-  background: #fff;
+  border: none; border-radius: 6px;
+  background: #fff; color: #000;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  display: flex; align-items: center; justify-content: center;
 }
-.keypad-ok { grid-column: span 2; background: #73a335; color: #fff; border-color: #5c8a2a; }
+.keypad-btn:active { background: #e8f1f6; }
+.keypad-back { background: #1f4e79; color: #fff; font-size: 20px; }
+.keypad-ok { grid-column: span 2; background: #7ab648; color: #fff; }
+.keypad-frac-icon { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.keypad-frac-icon .box { width: 16px; height: 7px; background: #9aa7ad; border-radius: 1px; }
+.keypad-frac-icon .bar { width: 24px; height: 2px; background: #000; }
 
 /* Razeni (M71A04) */
 .sort-header { display: inline-flex; width: 416px; margin: 10px 50px 0; }

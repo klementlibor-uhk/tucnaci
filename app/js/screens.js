@@ -57,10 +57,17 @@ function renderScreen() {
 
 // ---------- Ramec: cislo ulohy, kod obrazovky, navigacni policka, pocitadlo ----------
 
+// Policka v levé liste a pocitadlo v paticce jsou podle originalu jen behem ulohy,
+// ne behem Pokynu (viz DIRECTIONS_TIMSS_2023.docx).
 function sectionFor(code) {
-  if (TASK_CODES.indexOf(code) >= 0) return TASK_CODES;
-  if (DIR_CODES.indexOf(code) >= 0) return DIR_CODES;
-  return null;
+  return TASK_CODES.indexOf(code) >= 0 ? TASK_CODES : null;
+}
+
+// Zak se muze vratit na jakoukoli jiz zhlednutou obrazovku, ale vpred jen o jednu novou.
+function canNavigateTo(code) {
+  if (AppState.visited[code]) return true;
+  const idx = SCREEN_ORDER.findIndex(function (s) { return s.code === code; });
+  return idx === AppState.maxReachedIndex + 1;
 }
 
 function hasResponse(code) {
@@ -80,14 +87,18 @@ function updateFrame(def) {
   const footerText = document.getElementById("footer-text");
 
   chips.innerHTML = "";
+  itemId.textContent = def.code === "LOGIN" ? "" : def.code;
+
   if (!section) {
-    itemId.textContent = "";
+    // Pokyny: zelene kolecko bez cisla, zadna policka ani pocitadlo (jako v originale).
+    const isDirections = def.kind === "directions";
+    numberHolder.style.display = isDirections ? "flex" : "none";
+    document.getElementById("item-number").textContent = "";
     footerText.textContent = "";
     return;
   }
 
   const position = section.indexOf(def.code);
-  itemId.textContent = def.code;
   document.getElementById("item-number").textContent = String(position + 1);
   numberHolder.style.display = "flex";
   footerText.textContent = (position + 1) + "/" + section.length;
@@ -96,7 +107,8 @@ function updateFrame(def) {
     const chip = el("div", "chip", String(idx + 1));
     if (code === def.code) chip.classList.add("current");
     else if (AppState.visited[code]) chip.classList.add(hasResponse(code) ? "answered" : "unanswered");
-    chip.addEventListener("click", function () { goToScreenByCode(code); });
+    if (canNavigateTo(code)) chip.addEventListener("click", function () { goToScreenByCode(code); });
+    else chip.classList.add("locked");
     chips.appendChild(chip);
   });
 }
@@ -115,6 +127,7 @@ function goToIndex(newIndex, navTrackId) {
     });
   }
   AppState.screenIndex = newIndex;
+  AppState.maxReachedIndex = Math.max(AppState.maxReachedIndex, newIndex);
   renderScreen();
 }
 
@@ -130,7 +143,7 @@ function goBack() {
 
 function goToScreenByCode(code) {
   const idx = SCREEN_ORDER.findIndex(function (s) { return s.code === code; });
-  if (idx >= 0 && idx !== AppState.screenIndex) goToIndex(idx, "NAV_PROG");
+  if (idx >= 0 && idx !== AppState.screenIndex && canNavigateTo(code)) goToIndex(idx, "NAV_PROG");
 }
 
 // ---------- 1) Prihlaseni (podle nahledu originalu: jen ikony, zadny text) ----------
@@ -248,10 +261,69 @@ function renderPasswordGate(container, def) {
 
 // ---------- 3) Pokyny (zuzene dle spec kap.4) ----------
 
-function hintBox(texts, cream) {
-  const box = el("div", "hint-box" + (cream ? " cream" : ""));
-  texts.forEach(function (t) { box.appendChild(para(t)); });
-  return box;
+// Postavicky z originalu (Media/images/27557) - provazeji zaka Pokyny.
+const MASCOTS = {
+  wave: "media/images/pokyny/27557/Wave-200px-right.png",
+  kneelRight: "media/images/pokyny/27557/Kneeling-100px-right.png",
+  kneelLeft: "media/images/pokyny/27557/Kneeling-100px-left.png",
+  pointLeft: "media/images/pokyny/27557/Pointing100px-left.png",
+  pointRight: "media/images/pokyny/27557/Pointing-100px-right.png",
+  think: "media/images/pokyny/27557/To-Be-or...-100px-left.png",
+  walk: "media/images/pokyny/27557/Disco-100px-left_Disco 100px right.png",
+  happy: "media/images/pokyny/27557/Happy-fella-100px-left.png",
+};
+
+function mascot(key, height) {
+  const holder = el("div", "mascot");
+  const img = document.createElement("img");
+  img.src = imgPath(MASCOTS[key]);
+  if (height) img.style.height = height + "px";
+  holder.appendChild(img);
+  return holder;
+}
+
+function arrowImg() {
+  const img = document.createElement("img");
+  img.src = imgPath("media/images/ui/next-arrow.png");
+  img.className = "inline-arrow";
+  img.alt = "šipka vpřed";
+  return img;
+}
+
+// Odstavec s vlozenym obrazkem sipky: "Kliknutim na [sipka] prejdes dal."
+function lineWithArrow(before, after) {
+  const p = el("p");
+  p.appendChild(document.createTextNode(before));
+  p.appendChild(arrowImg());
+  p.appendChild(document.createTextNode(after));
+  return p;
+}
+
+function hintRow(mascotKey, lines, opts) {
+  opts = opts || {};
+  const row = el("div", "hint-row" + (opts.align ? " " + opts.align : ""));
+  if (mascotKey && !opts.mascotRight) row.appendChild(mascot(mascotKey, opts.mascotHeight));
+  const box = el("div", "hint-box" + (opts.cream ? " cream" : ""));
+  lines.forEach(function (line) {
+    box.appendChild(typeof line === "string" ? para(line) : line);
+  });
+  row.appendChild(box);
+  if (mascotKey && opts.mascotRight) row.appendChild(mascot(mascotKey, opts.mascotHeight));
+  return row;
+}
+
+function sectionTitle(text) {
+  return el("div", "dir-section-title", text);
+}
+
+// Cviceni vlevo + radu s postavickou vpravo (rozvrzeni jako v originale)
+function practiceRow(leftContent, hintRowEl) {
+  const row = el("div", "practice-row");
+  const leftCol = el("div", "practice-left");
+  leftContent.forEach(function (node) { leftCol.appendChild(node); });
+  row.appendChild(leftCol);
+  row.appendChild(hintRowEl);
+  return row;
 }
 
 function renderDirections(container, data) {
@@ -259,72 +331,127 @@ function renderDirections(container, data) {
   const code = data.screen_code;
 
   if (code === "G4_DIR_01") {
-    box.appendChild(hintBox([
-      "Vítej v testu TIMSS!",
+    const welcome = el("div", "hint-title", "Vítej v testu TIMSS!");
+    box.appendChild(hintRow("wave", [
+      welcome,
       // Uprava dle spec kap.4: text jen o matematice (puvodne i o prirodovede).
-      "V testu budeš odpovídat na otázky z matematiky.",
-      "Je důležité, aby ses snažil/a zodpovědět všechny otázky co nejlépe.",
-    ]));
-    box.appendChild(hintBox([
-      "Mezi otázkami můžeš přecházet kliknutím na šipky dole na obrazovce.",
-      "Kliknutím na zelenou šipku přejdeš na další obrazovku.",
-    ], true));
+      para("V testu budeš odpovídat na otázky z matematiky."),
+      el("p", "bold-line", "Je důležité, aby ses snažil/a zodpovědět všechny otázky co nejlépe."),
+    ], { mascotHeight: 170 }));
+    box.appendChild(hintRow("kneelRight", [
+      para("Mezi otázkami můžeš přecházet kliknutím na šipky dole na obrazovce."),
+      lineWithArrow("Kliknutím na ", " přejdeš na další obrazovku."),
+    ], { cream: true, align: "right" }));
   } else if (code === "G4_DIR_02") {
-    box.appendChild(el("h2", null, "Hodiny a lišta procházení testem"));
     // Uprava dle spec kap.4: bez pravitka, cas 18 minut misto 36+36.
-    box.appendChild(hintBox([
-      "Na vypracování úlohy Tučňáci budeš mít 18 minut.",
-      "Hodiny v levé horní části obrazovky ti budou ukazovat, kolik času ti zbývá.",
+    box.appendChild(el("h2", null, "Hodiny a ukazatel postupu"));
+    const clockSample = el("p");
+    clockSample.appendChild(document.createTextNode("Hodiny v levé horní části obrazovky ti budou ukazovat, kolik času ti zbývá, jako tyto:"));
+    const clock = el("div", "g-timer clock-sample", "17:56");
+    box.appendChild(hintRow("pointLeft", [
+      para("Na vypracování úlohy Tučňáci budeš mít 18 minut."),
+      clockSample,
+      clock,
     ]));
-    box.appendChild(hintBox([
-      "Na levé straně obrazovky je lišta procházení testem s políčky pro všechny otázky.",
-      "Dokud jsi na otázce, je její políčko zelené.",
-      "Když na otázku odpovíš, políčko této otázky zmodrá.",
-      "Pokud na otázku neodpovíš, políčko otázky zůstane šedé.",
-    ], true));
+
+    const swatchLine = function (text, cls) {
+      const p = el("p", "swatch-line");
+      p.appendChild(el("span", null, text));
+      p.appendChild(el("span", "chip-swatch " + cls));
+      return p;
+    };
+    box.appendChild(hintRow("pointLeft", [
+      para("Na levé straně obrazovky je ukazatel postupu s políčky pro všechny otázky."),
+      swatchLine("Dokud jsi na otázce, je její políčko zelené.", "current"),
+      swatchLine("Když na otázku odpovíš, políčko této otázky zmodrá.", "answered"),
+      swatchLine("Pokud na otázku neodpovíš, políčko otázky zůstane šedé.", "unanswered"),
+    ]));
   } else if (code === "G4_DIR_03") {
     box.appendChild(el("h2", null, "Vyber svou odpověď"));
-    box.appendChild(para("Pokud si svou odpovědí nejsi jistý/jistá, vyber tu, o které si myslíš, že je nejlepší."));
-    box.appendChild(hintBox(["U otázek jako je tato, klikni na kolečko vedle odpovědi, kterou vybereš."]));
-    box.appendChild(el("p", "table-label", "Vyber jednu odpověď"));
-    box.appendChild(para("Kolik minut má hodina?"));
-    box.appendChild(createSingleChoice("PRACTICE_G4_DIR_03A", [
-      { id: "1", label: "12" }, { id: "2", label: "24" }, { id: "3", label: "60" }, { id: "4", label: "120" },
-    ]));
+    box.appendChild(el("p", "dir-intro", "Pokud si svou odpovědí nejsi jistý/jistá, vyber tu, o které si myslíš, že je nejlepší."));
+
+    box.appendChild(sectionTitle("Vyber jednu odpověď"));
+    box.appendChild(practiceRow([
+      para("Kolik minut má hodina?"),
+      createSingleChoice("G4_DIR_03A", [
+        { id: "G4_DIR_03A__1", label: "12" },
+        { id: "G4_DIR_03A__2", label: "24" },
+        { id: "G4_DIR_03A__3", label: "60" },
+        { id: "G4_DIR_03A__4", label: "120" },
+      ]),
+    ], hintRow("think", ["U otázek jako tato klikni na kolečko vedle odpovědi, kterou považuješ za správnou."])));
+
     // Uprava dle spec kap.4: cviceni s rozbalovaci nabidkou vypusteno (v uloze se nepouziva).
-    box.appendChild(hintBox(["Zde potřebuješ vybrat více než jednu odpověď. Klikni na všechny odpovědi, které považuješ za správné."], true));
-    box.appendChild(el("p", "table-label", "Vyber všechny správné odpovědi"));
-    box.appendChild(para("Klikni na všechna zvířata, která mají čtyři nohy."));
-    const img = document.createElement("img");
-    img.src = imgPath("media/images/pokyny/27557/Snake_bird_camel_snail_deer_bluebox.png");
-    img.className = "practice-hotspot-img";
-    box.appendChild(img);
+    box.appendChild(sectionTitle("Vyber všechny správné odpovědi"));
+    const animalsQuestion = el("p");
+    animalsQuestion.appendChild(document.createTextNode("Klikni na "));
+    animalsQuestion.appendChild(el("strong", null, "všechna"));
+    animalsQuestion.appendChild(document.createTextNode(" zvířata, která mají čtyři nohy."));
+    box.appendChild(practiceRow([
+      animalsQuestion,
+      // Souradnice oblasti prevzaty z mapy v originalnim HTML (obrazek 480x67).
+      createHotspotMultiSelect("G4_DIR_03C",
+        imgPath("media/images/pokyny/27557/Snake_bird_camel_snail_deer_bluebox.png"), [
+          { id: "G4_DIR_03C__1", coords: [7, 7, 85, 61] },
+          { id: "G4_DIR_03C__2", coords: [104, 7, 182, 61] },
+          { id: "G4_DIR_03C__3", coords: [201, 7, 279, 61] },
+          { id: "G4_DIR_03C__4", coords: [299, 7, 377, 61] },
+          { id: "G4_DIR_03C__5", coords: [397, 7, 475, 61] },
+        ]),
+    ], hintRow("think", [
+      para("Zde potřebuješ vybrat více než jednu odpověď."),
+      para("Procvič si výběr kliknutím na všechny odpovědi, které považuješ za správné."),
+    ])));
   } else if (code === "G4_DIR_04") {
     box.appendChild(el("h2", null, "Přetáhni svou odpověď"));
-    box.appendChild(para("Někdy odpovíš tak, že přetáhneš slova, čísla nebo obrázky."));
-    box.appendChild(hintBox([
-      "Klikni na číslo a přidrž, přetáhni ho nad rámeček a pusť.",
-      "Procvič si přetažení všech čísel do spodních rámečků.",
-    ]));
-    box.appendChild(createSortable("PRACTICE_G4_DIR_04", [
-      { id: "1", label: "1" }, { id: "2", label: "2" }, { id: "3", label: "3" },
-    ], ["D1", "D2", "D3"]));
+    box.appendChild(el("p", "dir-intro", "Někdy odpovíš tak, že slova, čísla nebo obrázky přetáhneš."));
+    box.appendChild(practiceRow([
+      createDragToBoxes("G4_DIR_04",
+        [{ id: "_1", label: "1" }, { id: "_2", label: "2" }, { id: "_3", label: "3" }],
+        [{ id: "G4_DIR_04A" }, { id: "G4_DIR_04B" }, { id: "G4_DIR_04C" }]),
+    ], hintRow("think", [
+      para("Klikni na číslo, přidrž ho, přetáhni do rámečku a pusť."),
+      para("Procvič si přetažení všech čísel do spodních rámečků."),
+    ])));
   } else if (code === "G4_DIR_05") {
     box.appendChild(el("h2", null, "Číselná klávesnice"));
-    box.appendChild(para("U otázek, kde odpověď tvoří číslo, budeš používat číselnou klávesnici."));
-    box.appendChild(el("p", "table-label", "Použij číselnou klávesnici"));
+    box.appendChild(el("p", "dir-intro", "U otázek, kde odpověď tvoří číslo, budeš používat číselnou klávesnici."));
+    box.appendChild(practiceRow([
+      buildKeypadIllustration(),
+    ], hintRow("pointRight", [
+      para("Zadání znaménka mínus (klikni před číslem)"),
+      para("Zadání zlomku"),
+      para("Vymazání"),
+      para("Zavření číselné klávesnice"),
+      para("Zadání desetinné čárky"),
+    ], { cream: true })));
+
+    box.appendChild(sectionTitle("Použij číselnou klávesnici"));
     // Uprava dle spec kap.4: cviceni s celym cislem misto zlomku.
-    box.appendChild(para("Napiš číslo 5."));
-    const answerRow = el("p");
+    const answerRow = el("p", "answer-row");
     answerRow.appendChild(document.createTextNode("Odpověď: "));
-    answerRow.appendChild(createNumberField("PRACTICE_G4_DIR_05", ""));
-    box.appendChild(answerRow);
-    box.appendChild(hintBox(["Klikni do políčka pro odpověď a procvič si používání číselné klávesnice."], true));
+    answerRow.appendChild(createNumberField("G4_DIR_05", ""));
+    box.appendChild(practiceRow([
+      para("Napiš číslo 5."),
+      answerRow,
+    ], hintRow("think", [
+      para("Klikni do políčka pro odpověď a procvič si používání číselné klávesnice."),
+      para("Číselnou klávesnici můžeš libovolně přesouvat po obrazovce tak, že klikneš na její horní lištu a přetáhneš ji."),
+    ])));
   } else if (code === "G4_DIR_08") {
     box.appendChild(el("h2", null, "Tipy"));
-    box.appendChild(para("Přidáváme dvě rady před tím, než začneš."));
-    box.appendChild(hintBox(["Zedy", "V úlohách, kde se používají peníze, je speciální měna zed."]));
-    box.appendChild(hintBox(["Rolování", "Nezapomeň, že možná budeš potřebovat odrolovat stránku, aby se ti zobrazila celá otázka."], true));
+    box.appendChild(el("p", "dir-intro", "Na začátek se ti mohou hodit dvě rady."));
+    box.appendChild(hintRow("happy", [
+      el("div", "hint-title", "Zedy"),
+      para("V úlohách, kde se používají peníze, je speciální měna zed."),
+    ]));
+    box.appendChild(hintRow("walk", [
+      el("div", "hint-title", "Posouvání obrazovky"),
+      para("Nezapomeň, že možná budeš potřebovat posunout obrazovku, aby se ti zobrazila celá otázka."),
+    ], { align: "right", mascotRight: true }));
+    box.appendChild(hintRow("kneelRight", [
+      lineWithArrow("Klikni na ", " a přejdi na další stránku."),
+    ], { align: "center" }));
   }
 
   container.appendChild(box);
