@@ -4,11 +4,11 @@ const AppState = {
   screenIndex: 0,        // index do SCREEN_ORDER
   responses: {},         // odpovedi podle identifikatoru MQ... (kap. 3 specifikace)
   events: [],            // log procesnich udalosti (kap. 7 specifikace)
+  visited: {},           // navstivene obrazovky - podle nich se barvi policka v navigacni liste
   timerRemainingMs: null,
   timerHandle: null,
   timerStarted: false,
   fiveMinWarningShown: false,
-  navHistory: [],         // pro NAV_BACK spravne poradi
 };
 
 function imgPath(localPath) {

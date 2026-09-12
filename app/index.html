@@ -4,27 +4,56 @@
   <meta charset="UTF-8" />
   <title>Tučňáci nejmenší</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="vendor/mathquill/mathquill.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div id="app">
-    <div id="app-header">
-      <span class="title">TIMSS 2023 – Tučňáci nejmenší</span>
-      <span id="timer-display">18:00</span>
-    </div>
-    <div id="main-area">
-      <div id="progress-bar" class="hidden"></div>
-      <div id="screen-container"></div>
-    </div>
-    <div id="app-footer" class="hidden">
-      <button id="nav-back">&larr; Zpět</button>
-      <span>
-        <button id="export-events-btn" class="debug-export">Stáhnout events.csv</button>
-        <button id="export-responses-btn" class="debug-export">Stáhnout responses.csv</button>
-      </span>
-      <button id="nav-next">Další &rarr;</button>
+  <!-- Ramec testu podle originalu: 1280x735, cerny levy pruh 80px, modra paticka 53px -->
+  <div id="test-frame">
+    <div id="center-block">
+
+      <aside id="sidebar">
+        <div id="logo-holder"></div>
+        <div id="timer-display" class="g-timer">18:00</div>
+        <div id="nav-up" class="nav-arrow up"></div>
+        <div id="nav-chips"></div>
+        <div id="nav-down" class="nav-arrow down"></div>
+      </aside>
+
+      <main id="body-wrapper">
+        <div id="item-id"></div>
+        <div id="main-content">
+          <div id="item-number-holder"><span id="item-number"></span></div>
+          <div id="screen-container"></div>
+        </div>
+        <div id="scroll-bar"><div id="scroll-thumb"></div></div>
+      </main>
+
+      <footer id="app-footer">
+        <div id="widget-area">
+          <button id="ruler-btn" class="tool-btn" disabled title="Pravítko"></button>
+          <button id="calculator-btn" class="tool-btn" disabled title="Kalkulačka"></button>
+        </div>
+        <div id="footer-nav">
+          <button id="nav-back" class="arrow-btn prev" aria-label="Zpět"></button>
+          <span id="footer-text"></span>
+          <button id="nav-next" class="arrow-btn next" aria-label="Další"></button>
+        </div>
+        <div id="logo-area"></div>
+      </footer>
+
     </div>
   </div>
+
+  <!-- Docasny panel pro vyvoj: export nasbiranych dat (neni soucast originalu) -->
+  <div id="debug-bar">
+    <button id="export-events-btn">Stáhnout events.csv</button>
+    <button id="export-responses-btn">Stáhnout responses.csv</button>
+  </div>
+
+  <script src="vendor/jquery-1.8.3.min.js"></script>
+  <script src="vendor/jquery-ui-1.10.3.js"></script>
+  <script src="vendor/mathquill/mathquill.min.js"></script>
 
   <script src="js/manifest.js"></script>
   <script src="js/data.js"></script>

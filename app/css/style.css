@@ -1,178 +1,506 @@
+/* Vzhled podle originalniho Playeru (rozmery a barvy odmerene z timss.scss a _littlePenguins.scss).
+   Vlastni implementace - kod dodavatele se nekopiruje, prebiraji se jen grafika, fonty a rozmery. */
+
+/* ---------- Fonty z originalu ---------- */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal; font-weight: 400;
+  src: url("../../data/media/fonts/open-sans-v18-latin-regular.woff2") format("woff2"),
+       url("../../data/media/fonts/open-sans-v18-latin-regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic; font-weight: 400;
+  src: url("../../data/media/fonts/open-sans-v18-latin-italic.woff2") format("woff2"),
+       url("../../data/media/fonts/open-sans-v18-latin-italic.woff") format("woff");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal; font-weight: 700;
+  src: url("../../data/media/fonts/open-sans-v18-latin-700.woff2") format("woff2"),
+       url("../../data/media/fonts/open-sans-v18-latin-700.woff") format("woff");
+}
+@font-face {
+  font-family: "Paytone One";
+  font-style: normal; font-weight: 400;
+  src: url("../../data/media/fonts/Paytone-One-Regular.woff2") format("woff2"),
+       url("../../data/media/fonts/Paytone-One-Regular.woff") format("woff");
+}
+
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #eef3f6;
-  color: #222;
+  padding-top: 5px;
+  background: #A5CAE7;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 22.5px;
+  color: #000;
+  overflow-x: hidden;
 }
 
-#app {
-  max-width: 1100px;
-  margin: 0 auto;
-  min-height: 100vh;
+/* ---------- Ramec testu ---------- */
+#test-frame { width: 1280px; margin: 0 auto; position: relative; }
+
+#center-block {
+  position: relative;
   background: #fff;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 12px rgba(0,0,0,0.08);
+  border: 5px solid #000;
+  border-left-width: 0;
+  border-radius: 5px;
 }
 
-#app-header {
+#sidebar {
+  position: absolute;
+  left: 0; top: -1px;
+  width: 80px;
+  height: calc(100% + 2px);
+  background: #000;
+  border-radius: 2px;
+  padding: 6px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 99;
+}
+
+#logo-holder {
+  width: 67px; height: 44px;
+  background: url("../../data/media/images/ui/timss-header.png") no-repeat;
+  background-size: 100%;
+  flex: none;
+}
+
+.g-timer {
+  margin: 8px 0 11px;
+  width: 55px; height: 25px;
+  border: 2px solid #9bd3ef;
+  background-color: #cfe2ec;
+  color: #000;
+  border-radius: 7px;
+  font-family: "Paytone One", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: #1b2a4a;
+  justify-content: center;
+  flex: none;
+}
+
+.nav-arrow {
+  width: 16px;
+  background: url("../../data/media/images/ui/arrow2x.png") no-repeat;
+  flex: none;
+  cursor: pointer;
+}
+.nav-arrow.up { height: 18px; background-position: 0 0; }
+.nav-arrow.down { height: 55px; background-position: 0 -18px; }
+.nav-arrow.disabled { opacity: 0.5; cursor: default; }
+
+#nav-chips {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 6px 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+.chip {
+  width: 28px; height: 21px;
+  margin: 0 2px 4px;
+  background-color: #EEEEEE;
+  border: 1px solid #000;
+  border-radius: 8px/6px;
+  color: #000;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: none;
+}
+.chip.answered { background-color: #0471b2; color: #fff; }
+.chip.unanswered { background-color: #babcbd; }
+.chip.current { background-color: #80c043; }
+
+#body-wrapper {
+  height: 688px;
+  overflow: hidden;
+  position: relative;
+}
+
+#item-id {
+  position: absolute;
+  top: 0; right: 38px;
+  padding: 7px 12px;
+  color: #7f7f7f;
+  font-size: 15px;
+  z-index: 2;
+}
+
+#main-content {
+  height: 688px;
+  margin: 0 120px 0 160px;
+  position: relative;
+}
+
+#item-number-holder {
+  position: absolute;
+  left: -65px; top: 30px;
+  width: 52px; height: 52px;
+  background: #75A735;
+  border: 3px solid #D6DE23;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+#item-number {
+  font-family: "Paytone One", sans-serif;
+  font-size: 27px;
+  font-weight: 700;
   color: #fff;
-  padding: 10px 20px;
 }
-#app-header .title { font-weight: bold; font-size: 18px; }
-#timer-display { font-size: 22px; font-weight: bold; background: #0f1a30; padding: 4px 12px; border-radius: 6px; }
-
-#main-area { display: flex; flex: 1; min-height: 0; }
-
-#progress-bar {
-  width: 46px;
-  background: #0f1a30;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0;
-  gap: 6px;
-  overflow-y: auto;
-}
-#progress-bar.hidden { display: none; }
-.progress-chip { width: 26px; height: 26px; border-radius: 50%; background: #4a5b7a; }
-.progress-chip.current { background: #6fbf3c; }
-.progress-chip.visited { background: #3a78c9; }
 
 #screen-container {
-  flex: 1;
-  padding: 24px 32px;
+  height: 688px;
+  padding-top: 40px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
+
+#scroll-bar {
+  position: absolute;
+  top: 0; right: -1px;
+  width: 40px;
+  height: 100%;
+  background-color: #8cd7f7;
+  border-bottom-right-radius: 3px;
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+#scroll-thumb {
+  width: 35px; height: 197px;
+  background: url("../../data/media/images/ui/scrollbar.jpg") no-repeat;
+  background-size: 100% 100%;
+  border-radius: 3px;
+  display: none;
+}
+#scroll-thumb.show { display: block; }
 
 #app-footer {
+  height: 53px;
+  margin-left: 80px;
+  width: calc(100% - 80px);
+  background-color: #2C7AB8;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
-  background: #1b6fb8;
+  position: relative;
 }
-#app-footer.hidden { display: none; }
-#app-footer button {
-  background: #f5a623;
+#widget-area { margin-left: 10px; display: flex; gap: 8px; }
+.tool-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid #6f9ec4;
+  background: #fff no-repeat center;
+  background-size: 22px;
+  opacity: 0.55;
+  cursor: default;
+}
+#ruler-btn { background-image: url("../../data/media/images/ui/ruler.png"); }
+#calculator-btn { background-image: url("../../data/media/images/ui/calculator-icon.png"); }
+
+#footer-nav {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.arrow-btn {
+  width: 70px; height: 40px;
   border: none;
+  background: transparent no-repeat center;
+  background-size: 100%;
+  cursor: pointer;
+}
+.arrow-btn.prev { background-image: url("../../data/media/images/ui/prev-arrow.png"); }
+.arrow-btn.next { background-image: url("../../data/media/images/ui/next-arrow.png"); }
+.arrow-btn.hidden { visibility: hidden; }
+#footer-text { color: #fff; font-weight: 700; font-size: 17px; margin: 0 14px; }
+
+#logo-area {
+  margin-right: 10px;
+  width: 200px; height: 34px;
+  background: url("../../data/media/images/ui/timss-boston.png") no-repeat;
+  background-size: 100%;
+}
+
+/* Obrazovky bez ramce (prihlaseni, hesla, konec) - viz nahledy originalu */
+#test-frame.plain #sidebar,
+#test-frame.plain #app-footer,
+#test-frame.plain #scroll-bar,
+#test-frame.plain #item-id,
+#test-frame.plain #item-number-holder { display: none; }
+#test-frame.plain #center-block { border-left-width: 5px; }
+#test-frame.plain #main-content { margin: 0; }
+#test-frame.plain #screen-container { padding: 30px 40px; }
+
+/* ---------- Obsah obrazovek ---------- */
+.psi-title { font-size: 18px; font-weight: 700; margin: 0 0 10px; }
+h2 { font-size: 18px; margin: 0 0 12px; }
+h3 { font-size: 16px; margin: 10px 0 4px; }
+p { margin: 0 0 12px; }
+
+.primary-btn {
+  background: #f5a623;
+  border: 1px solid #d18b12;
   color: #1b2a4a;
-  font-weight: bold;
-  padding: 8px 18px;
+  font-weight: 700;
+  padding: 8px 22px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 15px;
+  font-family: "Open Sans", sans-serif;
 }
-#app-footer button.hidden { visibility: hidden; }
-#app-footer .debug-export { background: transparent; color: #cfe6fb; font-weight: normal; font-size: 12px; border: 1px solid #cfe6fb; }
 
-.primary-btn, .arrow-btn {
-  background: #f5a623;
+/* Prihlaseni - podle nahledu originalu (jen ikony, zadny text) */
+.login-box { max-width: 340px; margin: 40px auto; text-align: center; }
+.login-logo img { max-width: 150px; margin-bottom: 24px; }
+.login-form { background: #2a7ab6; border-radius: 10px; padding: 22px; }
+.login-row { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 6px; margin-bottom: 12px; padding: 6px 10px; }
+.login-input { border: none; outline: none; flex: 1; font-size: 16px; font-family: "Open Sans", sans-serif; }
+.login-error { color: #ffe082; min-height: 18px; font-size: 13px; margin-bottom: 8px; }
+.login-arrow {
+  width: 120px; height: 32px;
   border: none;
-  color: #1b2a4a;
-  font-weight: bold;
+  background: url("../../data/media/images/ui/next-arrow.png") no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+/* Obrazovky s heslem od zadavatele */
+.password-box { max-width: 620px; margin: 10px auto; }
+.password-logo { text-align: center; margin-bottom: 18px; }
+.password-logo img { width: 150px; }
+.password-header { background: #2a7ab6; color: #fff; text-align: center; font-weight: 700; padding: 6px; letter-spacing: 1px; }
+.password-panel { border: 2px solid #2a7ab6; padding: 18px 24px; margin-bottom: 22px; }
+.password-heading { font-size: 30px; text-align: center; margin-bottom: 14px; }
+.password-panel p { text-align: center; color: #d2691e; margin: 0 0 4px; }
+.password-input-row { display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; }
+.password-input { font-size: 16px; padding: 5px 10px; border: 1px solid #7f7f7f; width: 120px; font-family: "Open Sans", sans-serif; }
+.password-actions { text-align: center; margin-top: 18px; }
+
+/* Info obrazovky (konec pokynu, konec testu) */
+.info-box { max-width: 620px; margin: 40px auto; border: 2px solid #2a7ab6; padding: 20px 26px; }
+.info-box p { color: #d2691e; }
+.info-actions { text-align: center; margin-top: 20px; }
+.logoff-box { max-width: 620px; margin: 60px auto; text-align: center; }
+
+/* Pokyny */
+.directions-box { max-width: 900px; }
+.hint-box {
+  border: 5px solid #FEB90C;
+  border-radius: 10px;
   padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 15px;
-  margin-top: 14px;
+  margin: 12px 0;
+  background: #fff;
 }
-.arrow-btn.small { padding: 4px 12px; margin: 0 4px; }
-.inline-next-btn { display: inline-block; background: #f5a623; border-radius: 4px; padding: 2px 8px; color: #1b2a4a; font-weight: bold; }
+.hint-box.cream { background: #FFF2CC; }
+.table-label { color: #3366ff; font-weight: 700; }
+.practice-hotspot-img { max-width: 100%; }
 
-/* Login */
-.login-box { max-width: 340px; margin: 60px auto; text-align: center; }
-.login-logo img { max-width: 140px; margin-bottom: 20px; }
-.login-form { background: #1b6fb8; border-radius: 8px; padding: 20px; }
-.login-row { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 6px; margin-bottom: 10px; padding: 6px 10px; }
-.login-input { border: none; outline: none; flex: 1; font-size: 15px; }
-.login-error { color: #ffe082; min-height: 18px; font-size: 13px; margin-bottom: 6px; }
+/* ---------- Ukolove obrazovky ---------- */
+.task-screen { display: flex; }
+.left-panel { width: 450px; flex: none; }
+.right-panel { width: 510px; flex: none; margin-left: 15px; }
 
-/* Password gate */
-.password-box { max-width: 480px; margin: 40px auto; }
-.password-header { background: #1b6fb8; color: #fff; padding: 8px 14px; font-weight: bold; border-radius: 6px 6px 0 0; }
-.password-heading { font-size: 26px; margin: 14px 0; }
-.password-input-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
-.password-input { font-size: 16px; padding: 6px 10px; border: 1px solid #aaa; border-radius: 4px; width: 100px; }
+/* Pravy panel = obrazek webove stranky z originalu (uz obsahuje prohlizec i zalozky),
+   texty se na nej jen pozicuji (stejne jako v originale). */
+.right-side {
+  width: 510px; height: 610px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  border-radius: 5px;
+  margin-top: 32px;
+}
+.right-side .url p { margin: 13px 0 0 100px; font-size: 13px; }
+.right-side .tab-main-title p { font-size: 32px; text-align: center; margin-top: 14px; font-weight: 700; }
+.right-side .tabs { display: flex; padding-top: 5px; }
+.right-side .inner-tabs { width: 100%; text-align: center; }
+.right-side .inner-tabs p { color: #fff; font-weight: 700; margin: 0; font-size: 14px; }
+.right-side .inner-tabs.active p { color: #fef49b; }
+.right-side .tab-inner-section { padding: 15px 40px; }
 
-/* Directions / info */
-.directions-box, .info-box, .logoff-box { max-width: 640px; margin: 0 auto; }
-.hint-text { color: #555; font-style: italic; }
-.table-label { color: #3366ff; font-weight: bold; }
-.practice-hotspot-img { max-width: 100%; margin-top: 10px; }
+.m71a01-image { width: 500px; height: 460px; margin-left: 40px; background-size: 100%; background-repeat: no-repeat; }
+.next-button-inline {
+  display: inline-block;
+  width: 50px; height: 32px;
+  background: url("../../data/media/images/ui/next-arrow.png") no-repeat center;
+  background-size: 90%;
+  vertical-align: middle;
+  border: none;
+  cursor: pointer;
+}
+.option-letter { color: #75a735; font-size: 24px; font-family: "Paytone One", sans-serif; margin-right: 5px; }
 
-/* Task screens */
-.task-screen { display: flex; gap: 24px; }
-.left-panel { flex: 1; min-width: 320px; }
-.right-panel { flex: 1; min-width: 360px; }
-.psi-title { margin-top: 0; }
-.m71a01-image { max-width: 260px; display: block; margin-top: 14px; border-radius: 6px; }
-.url-bar { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 4px 10px; font-size: 12px; color: #555; margin-bottom: 6px; }
-.webpage-mock { background-size: cover; background-position: center; border-radius: 6px; padding: 12px; min-height: 420px; position: relative; }
-.webpage-title { background: rgba(255,255,255,0.85); font-weight: bold; font-size: 20px; text-align: center; padding: 6px; border-radius: 4px; }
-.webpage-tabs { display: flex; margin-top: 8px; }
-.webpage-tab { flex: 1; text-align: center; background: rgba(90,120,150,0.8); color: #fff; padding: 6px 2px; font-size: 12px; cursor: pointer; }
-.webpage-tab.active { background: #f5a623; color: #1b2a4a; font-weight: bold; }
-.webpage-inner { background: rgba(255,255,255,0.9); margin-top: 8px; border-radius: 6px; padding: 12px; min-height: 260px; }
-.tab-inner-content img { max-width: 100%; }
+/* Hottext (M71A02) */
+.hottext-group { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; width: 370px; }
+.hottext-option { cursor: pointer; text-align: center; padding: 8px 18px 8px 19px; border-radius: 5px; }
+.hottext-option img { display: block; }
+.hottext-option.selected { background: #bddce1; }
+.hottext-label { font-size: 13px; }
+.imgResponse { display: none; width: 125px; margin: 0 auto; }
+.imgResponse.active { display: block; }
+.imgResponse img { width: 100%; }
 
-/* Hottext */
-.hottext-group { display: flex; flex-wrap: wrap; gap: 14px; margin: 12px 0; }
-.hottext-option { cursor: pointer; text-align: center; border: 3px solid transparent; border-radius: 6px; padding: 4px; }
-.hottext-option img { width: 90px; display: block; }
-.hottext-option.selected { border-color: #f5a623; background: #fff3d6; }
-.hottext-label { font-size: 12px; }
-.webpage-preview-img { max-width: 160px; }
-.webpage-preview-img.hidden { display: none; }
-
-/* Choice */
+/* Vyber jedne moznosti */
 .choice-group { margin: 10px 0; }
-.choice-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; cursor: pointer; }
-.choice-radio { width: 18px; height: 18px; border: 2px solid #888; border-radius: 50%; display: inline-block; }
-.choice-row.selected .choice-radio { background: #f5a623; border-color: #f5a623; }
+.choice-row { display: flex; align-items: center; gap: 10px; padding: 3px 0; cursor: pointer; }
+.choice-radio { width: 39px; height: 39px; border: 2px solid #000; background: #fff; flex: none; }
+.choice-row.selected .choice-radio { background: #73a335; }
 
-/* Number field + keypad */
-.number-field-wrap { display: inline-flex; align-items: center; gap: 4px; }
-.number-field { display: inline-block; min-width: 60px; border: 2px solid #6fbf3c; border-radius: 4px; padding: 4px 8px; background: #fff; cursor: text; }
-.math-keypad { position: absolute; z-index: 50; background: #1b6fb8; border-radius: 8px; padding: 8px; display: grid; grid-template-columns: repeat(4, 44px); gap: 4px; }
+/* Cislene pole (MathQuill) */
+.number-field-wrap { display: inline-flex; align-items: center; gap: 5px; }
+.number-field { background: #fff; }
+.number-field .mq-editable-field { border: 3px solid #009144; width: 145px; height: 35px; border-radius: 3px; background: #fff; }
+
+/* Virtualni klavesnice math_min */
+.math-keypad {
+  position: absolute; z-index: 500;
+  background: #2b6ca3;
+  border-radius: 6px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 52px);
+  gap: 5px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.35);
+}
 .math-keypad.hidden { display: none; }
-.keypad-btn { padding: 10px 0; font-size: 16px; border: none; border-radius: 4px; background: #fff; cursor: pointer; }
-.keypad-ok { grid-column: span 2; background: #6fbf3c; color: #fff; font-weight: bold; }
+.math-keypad .keypad-header { grid-column: span 4; height: 18px; cursor: move; }
+.keypad-btn {
+  height: 44px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Open Sans", sans-serif;
+  border: 1px solid #b9c8d4;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+.keypad-ok { grid-column: span 2; background: #73a335; color: #fff; border-color: #5c8a2a; }
 
-/* Sortable */
-.sortable-list { list-style: none; display: flex; gap: 10px; padding: 0; margin: 12px 0; }
-.sortable-item { background: #3a78c9; color: #fff; padding: 14px 10px; border-radius: 6px; cursor: grab; text-align: center; min-width: 70px; }
-.sort-header { display: flex; justify-content: space-between; font-weight: bold; color: #666; max-width: 400px; }
+/* Razeni (M71A04) */
+.sort-header { display: inline-flex; width: 416px; margin: 10px 50px 0; }
+.sort-header span { width: 50%; color: #777d81; font-weight: 700; }
+.sort-header span:last-child { text-align: right; }
+.sortable-list { display: flex; list-style: none; padding: 0; margin: 0 34px; }
+.sortable-item {
+  margin: 0 13px;
+  width: 90px; height: 109px;
+  text-align: center;
+  background: url("../../data/media/images/littlepenguins/Screen4_penguin.png") no-repeat;
+  background-size: 100%;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.sortable-item .weight { margin-top: 84px; font-size: 15px; }
+.sort-placeholder { width: 90px; height: 109px; background: #e2f9fb; border-radius: 5px; margin: 0 14px; }
 
-/* Slider */
-.slider-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
-.slider-tag { width: 90px; font-size: 12px; }
-.slider-value { min-width: 40px; font-weight: bold; }
-.range-scale { display: flex; justify-content: space-between; max-width: 300px; font-size: 12px; color: #666; }
-.shark-img { max-width: 140px; float: right; }
-.healthy-caption { clear: both; font-weight: bold; text-align: center; padding-top: 8px; }
-.height-diagram { max-width: 200px; display: block; margin: 0 auto 10px; }
-.m71a07-penguin { max-width: 120px; float: right; }
-.speech-bubble { clear: both; text-align: center; font-weight: bold; padding-top: 8px; }
-.inner-title { font-weight: bold; margin-bottom: 8px; }
+/* Posuvniky na rybi ose (M71A05) */
+.range-slider-wrapper { position: relative; width: 90%; margin-left: 25px; height: 150px; }
+.slider-tag { background: #F58220; color: #fff; padding: 9px 17px; font-size: 14px; text-align: center; }
+.ui-slider { position: relative; height: 40px; width: 85%; margin: 0 auto; background: none; pointer-events: none; }
+.ui-slider .ui-slider-handle {
+  position: absolute;
+  width: 12px; height: 12px;
+  background-color: #f58220;
+  border: none; border-radius: 50%;
+  top: 17px; margin-left: -6px;
+  cursor: pointer;
+  pointer-events: auto;
+  outline: none;
+}
+.shark-img { max-width: 300px; }
+.healthy-caption { text-align: center; font-size: 14px; font-weight: 700; }
 
-/* Drag&drop table */
-.dragdrop-table-wrap { display: flex; gap: 16px; margin-top: 10px; }
-.dragdrop-tray { display: flex; flex-direction: column; gap: 8px; background: #f5f5f5; padding: 8px; border-radius: 6px; }
-.dragdrop-item { width: 30px; cursor: grab; }
-.dragdrop-zones { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.dragdrop-zone { border: 2px dashed #472f92; border-radius: 6px; padding: 8px; min-height: 60px; }
-.dragdrop-zone-label { font-size: 12px; font-weight: bold; margin-bottom: 4px; }
-.dragdrop-zone-items { display: flex; flex-wrap: wrap; gap: 4px; }
-.dragdrop-item.dropped { width: 22px; cursor: default; }
+/* Drag&drop do tabulky (M71A06) */
+.dragdrop-tray { display: flex; flex-direction: column; gap: 20px; }
+.dragdrop-item { width: 25px; height: 45px; cursor: pointer; }
+.drag-slot { border: 2px dashed #472f92; width: 40px; height: 60px; padding-top: 5px; }
+.psi-table { width: 349px; height: 375px; border-collapse: collapse; background: url("../../data/media/images/littlepenguins/Screen6_Table.png") no-repeat; background-size: 100% 100%; }
+.psi-table th, .psi-table td { padding: 7px 10px; text-align: left; vertical-align: top; }
+.psi-table p { margin: 0; }
+.drop-zone-cell { height: 147px; }
+.drop-zone { display: flex; flex-wrap: wrap; gap: 4px; min-height: 140px; align-content: flex-start; }
 
-/* Modal */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
-.modal-box { background: #fff; border: 2px solid #1b6fb8; border-radius: 8px; padding: 24px 30px; text-align: center; max-width: 320px; }
-.modal-text { font-size: 16px; margin-bottom: 6px; }
+/* Detaily jednotlivych ukolovych obrazovek */
+.question-line { display: flex; align-items: baseline; }
+.psi-list { margin: 0 0 12px 20px; padding-left: 18px; }
+.number-field-unit { font-size: 16px; }
+
+.m71a03-inner .height-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.height-label { width: 130px; font-size: 14px; }
+.height-label p { margin: 0 0 6px; }
+.height-diagram { height: 210px; }
+.height-sentence { margin-top: 18px; }
+
+.m71a04-inner .numpad-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+
+.range-title { font-weight: 700; margin-bottom: 10px; }
+.m71a05-inner .fish-scale {
+  height: 52px;
+  background: url("../../data/media/images/littlepenguins/Screen5_Fish_Scale.png") repeat-x center;
+  background-size: contain;
+  margin: 4px 0;
+}
+.range-scale { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-top: 4px; }
+.m71a05-bottom { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; }
+.m71a05-answer { width: 200px; font-size: 14px; }
+.m71a05-answer p { margin: 0 0 6px; }
+
+.m71a06-inner .table-with-tray { display: flex; gap: 10px; }
+.tray-col { display: flex; flex-direction: column; gap: 10px; padding-top: 60px; }
+.fish-legend p { font-size: 13px; margin: 0 0 24px; }
+.dragdrop-item.dropped { width: 25px; height: 45px; cursor: default; }
+
+.m71a07-inner .feed { width: 325px; }
+.penguins-img {
+  height: 250px;
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-size: contain;
+  position: relative;
+  margin-top: 10px;
+}
+.penguins-img-text {
+  width: 100px;
+  margin: 10px 22px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Modalni okna */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-box { background: #fff; border: 2px solid #2a7ab6; border-radius: 6px; padding: 26px 32px; text-align: center; min-width: 300px; }
+.modal-text { font-size: 17px; margin-bottom: 14px; }
+
+/* Vyvojarsky panel (neni soucast originalu) */
+#debug-bar { width: 1280px; margin: 6px auto; text-align: right; }
+#debug-bar button {
+  background: transparent; border: 1px solid #4a7ba7; color: #24547e;
+  font-size: 11px; padding: 3px 8px; border-radius: 3px; cursor: pointer;
+}
 
 .hidden { display: none !important; }

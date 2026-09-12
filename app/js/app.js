@@ -1,5 +1,5 @@
-// Bootstrap aplikace: navigace tlacitky, casovac, sledovani rolovani (SCROLL_* dle kap.7.2),
-// modalni okna a export dat (kap.7.3 - zakladni export do souboru ke stazeni, viz krok 4 planu).
+// Bootstrap aplikace: navigacni tlacitka, sledovani rolovani (SCROLL_* dle kap.7.2),
+// modalni okna a export dat (kap.7.3 - zatim export do souboru ke stazeni).
 
 function showModal(text, buttonLabel, onClose) {
   const overlay = el("div", "modal-overlay");
@@ -16,30 +16,31 @@ function showModal(text, buttonLabel, onClose) {
 }
 
 let scrollDebounce = null;
-let scrollActiveLogged = false;
+let scrollInProgress = false;
 
 function setupScrollTracking() {
   const container = document.getElementById("screen-container");
+  const thumb = document.getElementById("scroll-thumb");
   const isScrollable = container.scrollHeight > container.clientHeight + 4;
+
+  thumb.classList.toggle("show", isScrollable);
   logTrackEvent("SCROLL_ACTIVE", isScrollable ? "Y" : "N");
-  scrollActiveLogged = false;
+  scrollInProgress = false;
+
   container.onscroll = function () {
-    if (!scrollActiveLogged) {
-      scrollActiveLogged = true;
-      logTrackEvent("SCROLL_START", {
-        ScrollTop: container.scrollTop,
-        Clientheight: container.clientHeight,
-        TotalUIHeight: container.scrollHeight,
-      });
+    const data = {
+      ScrollTop: container.scrollTop,
+      Clientheight: container.clientHeight,
+      TotalUIHeight: container.scrollHeight,
+    };
+    if (!scrollInProgress) {
+      scrollInProgress = true;
+      logTrackEvent("SCROLL_START", data);
     }
     clearTimeout(scrollDebounce);
     scrollDebounce = setTimeout(function () {
-      logTrackEvent("SCROLL_STOP", {
-        ScrollTop: container.scrollTop,
-        Clientheight: container.clientHeight,
-        TotalUIHeight: container.scrollHeight,
-      });
-      scrollActiveLogged = false;
+      logTrackEvent("SCROLL_STOP", data);
+      scrollInProgress = false;
     }, 300);
   };
 }
@@ -54,9 +55,17 @@ function init() {
     downloadTextFile("responses.csv", exportResponsesCsv());
   });
 
-  const originalRenderScreen = renderScreen;
+  // Klik mimo cislene pole zavre virtualni klavesnici.
+  document.addEventListener("mousedown", function (e) {
+    const keypad = document.getElementById("math-keypad");
+    if (!keypad || keypad.classList.contains("hidden")) return;
+    if (keypad.contains(e.target) || e.target.closest(".number-field")) return;
+    closeKeypad();
+  });
+
+  const baseRender = renderScreen;
   renderScreen = function () {
-    originalRenderScreen();
+    baseRender();
     setupScrollTracking();
   };
 
