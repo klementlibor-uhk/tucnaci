@@ -484,14 +484,7 @@ function createDragSource(itemId, imgSrc) {
   pendingInits.push(function () {
     $(img).draggable({
       // Taha se cely preruseny ramecek se symbolem, jako v originale
-      helper: function () {
-        const ghost = el("div", "drag-slot drag-slot-ghost");
-        const copy = document.createElement("img");
-        copy.src = imgSrc;
-        copy.className = "dragdrop-item";
-        ghost.appendChild(copy);
-        return ghost;
-      },
+      helper: function () { return fishGhost(imgSrc); },
       revert: "invalid",
       appendTo: "body",
       zIndex: 900,
@@ -503,11 +496,35 @@ function createDragSource(itemId, imgSrc) {
 const DROP_COLS = 6;
 const DROP_ROWS = 2;
 
-function createDropZone(fieldId, zoneId, dropState) {
+// Pomocny prvek pri tazeni: preruseny ramecek se symbolem (jako v originale)
+function fishGhost(imgSrc) {
+  const ghost = el("div", "drag-slot drag-slot-ghost");
+  const copy = document.createElement("img");
+  copy.src = imgSrc;
+  copy.className = "dragdrop-item";
+  ghost.appendChild(copy);
+  return ghost;
+}
+
+function dropResponse(registry) {
+  return Object.keys(registry).map(function (zoneId) {
+    const slots = registry[zoneId].slots;
+    const items = Object.keys(slots)
+      .sort(function (a, b) { return a - b; })
+      .map(function (slot) { return slots[slot].itemId; });
+    return zoneId + "(" + items.join(";") + ")";
+  }).join(",");
+}
+
+function releaseSlot(registry, cell) {
+  const zoneId = cell.dataset.zoneId;
+  if (zoneId && registry[zoneId]) delete registry[zoneId].slots[cell.dataset.slot];
+}
+
+function createDropZone(fieldId, zoneId, registry) {
   const zone = el("div", "drop-zone");
   zone.dataset.zoneId = zoneId;
-  dropState[zoneId] = [];
-  const takenSlots = {};
+  registry[zoneId] = { zone: zone, slots: {} };
 
   // Policko pod mistem pusteni; pokud je obsazene, vezme se nejblizsi volne
   function slotFor(helperEl) {
@@ -518,37 +535,89 @@ function createDropZone(fieldId, zoneId, dropState) {
     const total = DROP_COLS * DROP_ROWS;
     for (let i = 0; i < total; i++) {
       const slot = (row * DROP_COLS + col + i) % total;
-      if (!takenSlots[slot]) return slot;
+      if (!registry[zoneId].slots[slot]) return slot;
     }
     return null;
   }
 
+  // Usazeny symbol lze znovu chytit a presunout jinam nebo vratit do legendy
+  function makeMovable(cell, imgSrc) {
+    $(cell).draggable({
+      helper: function () { return fishGhost(imgSrc); },
+      revert: "invalid",
+      appendTo: "body",
+      zIndex: 900,
+    });
+  }
+
   pendingInits.push(function () {
     $(zone).droppable({
-      accept: ".dragdrop-item",
+      accept: ".dragdrop-item, .drop-cell-item",
       tolerance: "pointer",
       drop: function (event, ui) {
-        const itemId = ui.draggable[0].dataset.itemId;
+        const dragged = ui.draggable[0];
+        const moving = dragged.classList.contains("drop-cell-item");
+        const itemId = dragged.dataset.itemId;
+        const imgSrc = moving ? dragged.querySelector("img").src : dragged.src;
+
+        if (moving) releaseSlot(registry, dragged);
         const slot = slotFor(ui.helper[0]);
-        if (slot === null) return;
-        takenSlots[slot] = true;
-        dropState[zoneId].push(itemId);
-        // Symbol se usadi do mrizky policek (40x65 px jako v originale)
-        const cell = el("div", "drop-cell-item");
+        if (slot === null) {
+          // neni volne policko - vratime symbol tam, kde byl
+          if (moving) registry[dragged.dataset.zoneId].slots[dragged.dataset.slot] = { itemId: itemId, cell: dragged };
+          return;
+        }
+
+        let cell;
+        if (moving) {
+          cell = dragged;
+          cell.style.left = ""; cell.style.top = "";   // zbytky po tazeni
+        } else {
+          cell = el("div", "drop-cell-item");
+          cell.dataset.itemId = itemId;
+          const copy = document.createElement("img");
+          copy.src = imgSrc;
+          cell.appendChild(copy);
+          makeMovable(cell, imgSrc);
+        }
         cell.style.gridColumnStart = (slot % DROP_COLS) + 1;
         cell.style.gridRowStart = Math.floor(slot / DROP_COLS) + 1;
-        const copy = document.createElement("img");
-        copy.src = ui.draggable[0].src;
-        cell.appendChild(copy);
+        cell.dataset.zoneId = zoneId;
+        cell.dataset.slot = slot;
         zone.appendChild(cell);
-        const response = Object.keys(dropState).map(function (z) {
-          return z + "(" + dropState[z].join(";") + ")";
-        }).join(",");
-        AppState.responses[fieldId] = response;
-        logComponentEvent(fieldId, { dragged: itemId, dropped: zoneId, response: response });
+        registry[zoneId].slots[slot] = { itemId: itemId, cell: cell };
+
+        AppState.responses[fieldId] = dropResponse(registry);
+        logComponentEvent(fieldId, {
+          dragged: itemId,
+          dropped: zoneId,
+          response: AppState.responses[fieldId],
+        });
       },
     });
   });
 
   return zone;
+}
+
+// Legenda slouzi zaroven jako misto, kam lze symbol vratit (odebrat z tabulky)
+function makeRemovalTarget(element, fieldId, registry) {
+  pendingInits.push(function () {
+    $(element).droppable({
+      accept: ".drop-cell-item",
+      tolerance: "pointer",
+      drop: function (event, ui) {
+        const cell = ui.draggable[0];
+        const itemId = cell.dataset.itemId;
+        releaseSlot(registry, cell);
+        cell.parentNode.removeChild(cell);
+        AppState.responses[fieldId] = dropResponse(registry);
+        logComponentEvent(fieldId, {
+          dragged: itemId,
+          dropped: "source",
+          response: AppState.responses[fieldId],
+        });
+      },
+    });
+  });
 }

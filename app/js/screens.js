@@ -816,7 +816,7 @@ function renderM71A06(left, wrap) {
   const inner = el("div", "m71a06-inner");
   inner.appendChild(el("div", "psi-title", "Potrava, kterou sežere zdravý tučňák nejmenší"));
 
-  const dropState = {};
+  const dropRegistry = {};
   const table = el("table", "psi-table");
   const thead = document.createElement("thead");
   const hrow = document.createElement("tr");
@@ -833,7 +833,7 @@ function renderM71A06(left, wrap) {
     nameCell.appendChild(el("div", null, row[1]));
     tr.appendChild(nameCell);
     const td = el("td", "drop-cell");
-    td.appendChild(createDropZone("MQ71A05B_T", row[2], dropState));
+    td.appendChild(createDropZone("MQ71A05B_T", row[2], dropRegistry));
     tr.appendChild(td);
     tbody.appendChild(tr);
   });
@@ -854,6 +854,8 @@ function renderM71A06(left, wrap) {
     row.appendChild(el("span", "legend-label", item.label));
     trayCol.appendChild(row);
   });
+  // Pretazenim zpet do legendy zak symbol z tabulky odebere
+  makeRemovalTarget(trayCol, "MQ71A05B_T", dropRegistry);
   tableRow.appendChild(trayCol);
 
   inner.appendChild(tableRow);
