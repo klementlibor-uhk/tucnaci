@@ -21,7 +21,8 @@ function question(letter, text) {
 }
 
 const TASK_CODES = ["M71A01", "M71A02", "M71A03", "M71A04", "M71A05", "M71A06", "M71A07"];
-const DIR_CODES = ["G4_DIR_01", "G4_DIR_02", "G4_DIR_03", "G4_DIR_04", "G4_DIR_05", "G4_DIR_08"];
+// Konec pokynu je soucasti ukazatele postupu Pokynu (posledni policko).
+const DIR_CODES = ["G4_DIR_01", "G4_DIR_02", "G4_DIR_03", "G4_DIR_04", "G4_DIR_05", "G4_DIR_08", "DIR_END_G4"];
 const TAB_LABELS = ["Obrázek", "Výška", "Hmotnost", "Počet", "Potrava", "Příspěvek"];
 const TAB_CODES = ["M71A02", "M71A03", "M71A04", "M71A05", "M71A06", "M71A07"];
 
@@ -92,7 +93,7 @@ function updateFrame(def) {
   itemId.textContent = def.code === "LOGIN" ? "" : def.code;
 
   if (!section) {
-    numberHolder.style.display = def.code === "DIR_END_G4" ? "flex" : "none";
+    numberHolder.style.display = "none";
     document.getElementById("item-number").textContent = "";
     footerText.textContent = "";
     return;

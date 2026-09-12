@@ -30,7 +30,7 @@ const KEYPAD_LAYOUT = [
   { label: "1", action: typeKey("1") },
   { label: "2", action: typeKey("2") },
   { label: "3", action: typeKey("3") },
-  { label: "⌫", cls: "keypad-back", action: function (mf) { mf.keystroke("Backspace"); } },
+  { backspace: true, cls: "keypad-back", action: function (mf) { mf.keystroke("Backspace"); } },
   { label: "0", action: typeKey("0") },
   { label: ",", action: typeKey(",") },
   { label: "OK", cls: "keypad-ok", action: null },
@@ -43,6 +43,32 @@ function fractionIcon() {
   icon.appendChild(el("span", "bar"));
   icon.appendChild(el("span", "box"));
   return icon;
+}
+
+// Ikona mazani: bily petiuhelnik se sipkou vlevo a krizkem uvnitr (jako v originale)
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+function backspaceIcon() {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", "0 0 30 20");
+  svg.setAttribute("width", "30");
+  svg.setAttribute("height", "20");
+
+  const shape = document.createElementNS(SVG_NS, "path");
+  shape.setAttribute("d", "M10 1 H28 A1 1 0 0 1 29 2 V18 A1 1 0 0 1 28 19 H10 L1 10 Z");
+  shape.setAttribute("fill", "#fff");
+  svg.appendChild(shape);
+
+  [[14, 6, 22, 14], [22, 6, 14, 14]].forEach(function (c) {
+    const line = document.createElementNS(SVG_NS, "line");
+    line.setAttribute("x1", c[0]); line.setAttribute("y1", c[1]);
+    line.setAttribute("x2", c[2]); line.setAttribute("y2", c[3]);
+    line.setAttribute("stroke", "#1f4e79");
+    line.setAttribute("stroke-width", "2.5");
+    line.setAttribute("stroke-linecap", "round");
+    svg.appendChild(line);
+  });
+  return svg;
 }
 
 function ensureKeypad() {
@@ -60,6 +86,7 @@ function ensureKeypad() {
     btn.type = "button";
     btn.className = "keypad-btn" + (key.cls ? " " + key.cls : "");
     if (key.fraction) btn.appendChild(fractionIcon());
+    else if (key.backspace) btn.appendChild(backspaceIcon());
     else btn.textContent = key.label;
     // Nesmi sebrat fokus poli - jinak by se klavesnice hned zavrela.
     btn.addEventListener("mousedown", function (e) { e.preventDefault(); });
@@ -86,6 +113,7 @@ function buildKeypadIllustration() {
   KEYPAD_LAYOUT.forEach(function (key) {
     const btn = el("div", "keypad-btn" + (key.cls ? " " + key.cls : ""));
     if (key.fraction) btn.appendChild(fractionIcon());
+    else if (key.backspace) btn.appendChild(backspaceIcon());
     else btn.textContent = key.label;
     kb.appendChild(btn);
   });
@@ -100,7 +128,7 @@ function buildKeypadIllustration() {
     "Zavření číselné klávesnice",
   ].forEach(function (text) {
     const row = el("div", "callout");
-    row.appendChild(el("span", "callout-arrow", "⬅"));
+    row.appendChild(el("span", "callout-arrow"));
     row.appendChild(el("div", "callout-box", text));
     callouts.appendChild(row);
   });
@@ -110,7 +138,7 @@ function buildKeypadIllustration() {
   wrap.appendChild(demo);
 
   const below = el("div", "callout-below");
-  below.appendChild(el("span", "callout-arrow", "⬆"));
+  below.appendChild(el("span", "callout-arrow up"));
   below.appendChild(el("div", "callout-box", "Zadání desetinné čárky"));
   wrap.appendChild(below);
 
