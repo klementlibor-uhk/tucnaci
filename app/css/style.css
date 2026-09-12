@@ -533,11 +533,13 @@ p { margin: 0 0 12px; }
 .option-letter { color: #75a735; font-size: 24px; font-family: "Paytone One", sans-serif; margin-right: 5px; }
 
 /* Hottext (M71A02) */
-.hottext-group { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; width: 370px; }
-.hottext-option { cursor: pointer; text-align: center; padding: 8px 18px 8px 19px; border-radius: 5px; }
+.hottext-group { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; width: 420px; }
+.hottext-option { cursor: pointer; padding: 5px; border-radius: 5px; }
 .hottext-option img { display: block; }
 .hottext-option.selected { background: #bddce1; }
-.hottext-label { font-size: 13px; }
+.opt-row { display: flex; align-items: center; gap: 5px; }
+.y-label { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 13px; }
+.x-label { text-align: center; font-size: 13px; margin-top: 3px; }
 .imgResponse { display: none; width: 125px; margin: 0 auto; }
 .imgResponse.active { display: block; }
 .imgResponse img { width: 100%; }

@@ -591,14 +591,19 @@ function renderM71A02(left, wrap) {
   left.appendChild(para("Který obrázek má největší obsah?"));
   left.appendChild(para("(Označ obrázek.)"));
 
-  // Sirky podle originalu (_littlePenguins.scss): 110 / 135 / 100 / 275 px
+  // Sirky obrazku podle originalu: v _littlePenguins.scss ma cela polozka 110/135/100/275 px
+  // vcetne odsazeni pro popisky (18+19 px), samotna fotka je tedy o 37 px uzsi.
   const options = [
-    { id: "MQ71A01__1", img: "Screen2_Selectable1.png", label: "6 cm × 4 cm", width: 110 },
-    { id: "MQ71A01__2", img: "Screen2_Selectable2.png", label: "5 cm × 5 cm", width: 135 },
-    { id: "MQ71A01__3", img: "Screen2_Selectable3.png", label: "7 cm × 3 cm", width: 100 },
-    { id: "MQ71A01__4", img: "Screen2_Selectable4.png", label: "2 cm × 9 cm", width: 275 },
+    { id: "MQ71A01__1", img: "Screen2_Selectable1.png", labelY: "6 cm", labelX: "4 cm", width: 73 },
+    { id: "MQ71A01__2", img: "Screen2_Selectable2.png", labelY: "5 cm", labelX: "5 cm", width: 98 },
+    { id: "MQ71A01__3", img: "Screen2_Selectable3.png", labelY: "7 cm", labelX: "3 cm", width: 63 },
+    { id: "MQ71A01__4", img: "Screen2_Selectable4.png", labelY: "2 cm", labelX: "9 cm", width: 238 },
   ].map(function (o) {
-    return { id: o.id, imgSrc: imgPath("media/images/littlepenguins/" + o.img), label: o.label, width: o.width };
+    return {
+      id: o.id,
+      imgSrc: imgPath("media/images/littlepenguins/" + o.img),
+      labelY: o.labelY, labelX: o.labelX, width: o.width,
+    };
   });
 
   const inner = el("div", "M71A02_imgResponse");

@@ -214,12 +214,17 @@ function createHottext(fieldId, options, onChange) {
   let selected = null;
   options.forEach(function (opt) {
     const item = el("div", "hottext-option");
+
+    // Rozmery jako v originale: vyska svisle vlevo, sirka vodorovne pod obrazkem
+    const row = el("div", "opt-row");
+    if (opt.labelY) row.appendChild(el("span", "y-label", opt.labelY));
     const img = document.createElement("img");
     img.src = opt.imgSrc;
     img.alt = "";
     if (opt.width) img.style.width = opt.width + "px";
-    item.appendChild(img);
-    if (opt.label) item.appendChild(el("div", "hottext-label", opt.label));
+    row.appendChild(img);
+    item.appendChild(row);
+    if (opt.labelX) item.appendChild(el("div", "x-label", opt.labelX));
     item.addEventListener("click", function () {
       const trackId = fieldId + "_" + opt.id;
       if (selected === opt.id) {
