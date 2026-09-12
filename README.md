@@ -42,6 +42,18 @@ serve.ps1, .claude/launch.json – lokální statický server pro vývoj/testov�
 G4_USB_TEST_FINAL_PLAYER/     – originální offline Player (jen pro čtení/referenci, nekopíruje se do enginu)
 ```
 
+### Převzaté knihovny a písma
+
+Engine používá stejné open-source knihovny jako originál, aby bylo ovládání pro žáka co
+nejpodobnější: **jQuery UI 1.10.3** (MIT) pro řazení, přetahování a posuvníky a **MathQuill
+0.10.1** (MPL 2.0) pro číselná pole – obojí v `app/vendor/`. Kód dodavatele (Sonet /
+Assessment Master) se nepřebírá.
+
+Písma pocházejí z originálního balíčku (`data/media/fonts/`). Protože obsahují jen základní
+latinku bez české diakritiky, je doplněn oficiální **Open Sans ve variantě latin-ext**
+(Google Fonts, licence Apache 2.0) – `open-sans-latin-ext*.woff2`. Přes `unicode-range` se
+použije jen na znaky, které písmům z balíčku chybí (č, ň, š, ř, ž…).
+
 ### Spuštění enginu lokálně
 
 Otevřít `app/index.html` přímo v prohlížeči (dvojklikem) nefunguje spolehlivě (prohlížeče blokují
