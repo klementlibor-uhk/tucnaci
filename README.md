@@ -65,6 +65,13 @@ latinku bez české diakritiky, je doplněn oficiální **Open Sans ve variantě
 (Google Fonts, licence Apache 2.0) – `open-sans-latin-ext*.woff2`. Přes `unicode-range` se
 použije jen na znaky, které písmům z balíčku chybí (č, ň, š, ř, ž…).
 
+### Kde test běží
+
+Živá verze (GitHub Pages): **https://klementlibor-uhk.github.io/tucnaci/**
+
+Krátká adresa přesměruje na `app/index.html`, kde test skutečně běží (zajišťuje to
+[`index.html`](index.html) v kořeni). Bez něj by se na krátké adrese zobrazil tento soubor README.
+
 ### Spuštění enginu lokálně
 
 Otevřít `app/index.html` přímo v prohlížeči (dvojklikem) nefunguje spolehlivě (prohlížeče blokují
